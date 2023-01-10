@@ -1,0 +1,18 @@
+#login-form {
+  margin-top: calc((100vh - 250px) / 2);
+}
+
+.login-input {
+  max-width: 300px;
+  min-width: 250px;
+  margin: 10px auto;
+}
+
+#login-button {
+  width: 150px;
+  margin: 10px auto;
+}
+
+.not-allowed {
+  cursor: not-allowed !important;
+}

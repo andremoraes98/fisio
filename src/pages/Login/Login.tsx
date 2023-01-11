@@ -32,7 +32,7 @@ const Login = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		if (credentials.email === correctCredentials.email && credentials.password === correctCredentials.password) {
-			navigate('/main');
+			navigate('/calendar');
 		} else {
 			e.preventDefault();
 			setErrorMessage('Email ou senha incorretos');
@@ -76,7 +76,7 @@ const Login = () => {
 				id='login-button'
 				type='submit'
 				disabled={isDisabled}
-				className={isDisabled ? 'not-allowed' : ''}
+				variant={isDisabled ? 'secondary' : 'success'}
 			>
 				Login
 			</Button>

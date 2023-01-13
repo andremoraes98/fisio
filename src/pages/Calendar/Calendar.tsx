@@ -7,13 +7,16 @@ const Calendar: FC = () => {
 	const [dates, setDates] = useState<Date[]>([]);
 	const [selectedDate, setSelectDate] = useState<Date>(new Date());
 
-	const handleChangeDate = (date: Date) => {
-		console.log(date);
+	const handleDateChange = (date: Date) => {
 		setSelectDate(date);
 	};
 
 	const handleAddButtonClick = () => {
 		setDates(prevState => [...prevState, selectedDate]);
+	};
+
+	const handleCelarButtonClick = () => {
+		setDates([]);
 	};
 
 	const formatDate = (date: Date) => {
@@ -23,26 +26,57 @@ const Calendar: FC = () => {
 		return `${day}/${month}/${year}`;
 	};
 
+	const removeDateFromState = (index: number) => {
+		const newDates = dates.filter((_date, hofIndex) => index !== hofIndex);
+		setDates(newDates);
+	};
+
 	return (
-		<main>
-			<ul>
+		<section className='mx-auto'>
+			<ul className='m-0'>
 				{
-					dates.map(date => (
-						<li key={date.getMilliseconds()}>{formatDate(date)}</li>
+					dates.map((date, index) => (
+						<li key={index}>
+							{formatDate(date)}
+							<Button
+								variant='danger'
+								onClick={() => {
+									removeDateFromState(index);
+								}}
+							>
+								X
+							</Button>
+						</li>
 					))
 				}
 			</ul>
+
 			<DatePicker
 				selected={selectedDate}
-				onChange={handleChangeDate}
+				onChange={handleDateChange}
 				dateFormat='dd/MM/yyyy'
 			/>
+
+			<input
+				type='number'
+			/>
+
 			<Button
 				onClick={handleAddButtonClick}
+				variant='success'
+				className='m-2'
 			>
         Adicionar
 			</Button>
-		</main>
+
+			<Button
+				onClick={handleCelarButtonClick}
+				variant='secondary'
+				className='m-2'
+			>
+        Limpar
+			</Button>
+		</section>
 	);
 };
 

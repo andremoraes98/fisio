@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Calendar.css';
 import {useNavigate} from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 
 const Calendar: FC = () => {
 	const navigate = useNavigate();
@@ -12,6 +13,13 @@ const Calendar: FC = () => {
 	const [selectedDate, setSelectDate] = useState<Date | undefined>(undefined);
 	const [totalValue, setTotalValue] = useState<string>('R$ 0,00');
 	const [costPerClass, setCostPerClass] = useState<string>('');
+	const [addDateAutomatic, setAddDateAutomatic] = useState<boolean>(false);
+
+	const handleDateClose = () => {
+		if (addDateAutomatic) {
+			handleAddButtonClick();
+		}
+	};
 
 	const handleAddButtonClick = () => {
 		if (selectedDate) {
@@ -63,17 +71,29 @@ const Calendar: FC = () => {
 					onChange={(date: Date) => {
 						setSelectDate(date);
 					}}
+					onCalendarClose={handleDateClose}
 					dateFormat='dd/MM/yyyy'
 					isClearable
 					placeholderText='Data da aula'
 				/>
 			</div>
 
+			<Form.Check
+				type='switch'
+				label='Adicionar automaticamente'
+				className='m-3'
+				checked={addDateAutomatic}
+				onChange={() => {
+					setAddDateAutomatic(!addDateAutomatic);
+				}}
+			/>
+
 			<div>
 				<Button
 					onClick={handleAddButtonClick}
 					variant='success'
 					className='m-2'
+					disabled={addDateAutomatic}
 				>
 					Adicionar
 				</Button>
@@ -87,31 +107,41 @@ const Calendar: FC = () => {
 				</Button>
 			</div>
 
-			<ul
-				id='dates'
-				className='m-0 w-50'
-			>
-				{
-					dates.map((date, index) => (
-						<li
-							key={index}
-							className='flex-center-around m-1'
+			{
+				dates.length !== 0 && (
+					<div id='dates-container'>
+						<p className='m-0'>
+					Datas selecionadas:
+						</p>
+
+						<ul
+							id='dates'
+							className='m-0 w-50'
 						>
-							{formatDate(date)}
-							<div id='calendar-delete-button'>
-								<Button
-									variant='danger'
-									onClick={() => {
-										removeDateFromState(index);
-									}}
-								>
-								X
-								</Button>
-							</div>
-						</li>
-					))
-				}
-			</ul>
+							{
+								dates.map((date, index) => (
+									<li
+										key={index}
+										className='flex-center-around m-1'
+									>
+										{formatDate(date)}
+										<div id='calendar-delete-button'>
+											<Button
+												variant='danger'
+												onClick={() => {
+													removeDateFromState(index);
+												}}
+											>
+										X
+											</Button>
+										</div>
+									</li>
+								))
+							}
+						</ul>
+					</div>
+				)
+			}
 
 			<input
 				id='cost-per-class'

@@ -32,7 +32,7 @@ const Login = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		if (credentials.email === correctCredentials.email && credentials.password === correctCredentials.password) {
-			navigate('/calendar');
+			navigate('/home');
 		} else {
 			e.preventDefault();
 			setErrorMessage('Email ou senha incorretos');

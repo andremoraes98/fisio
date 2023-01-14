@@ -146,7 +146,7 @@ const Calendar: FC = () => {
 			<input
 				id='cost-per-class'
 				className='mt-5'
-				type='text'
+				type='number'
 				placeholder='Valor/aula'
 				value={costPerClass}
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

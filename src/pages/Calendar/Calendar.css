@@ -45,3 +45,8 @@
   border-radius: 10px;
   padding: 10px 0;
 }
+
+#cost-per-class {
+  width: 20%;
+  min-width: 100px;
+}

@@ -1,23 +1,22 @@
 import React, {useState, type FC} from 'react';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Calendar.css';
+import {useNavigate} from 'react-router-dom';
 
 const Calendar: FC = () => {
+	const navigate = useNavigate();
+
 	const [dates, setDates] = useState<Date[]>([]);
-	const [selectedDate, setSelectDate] = useState<Date>(new Date());
+	const [selectedDate, setSelectDate] = useState<Date | undefined>(undefined);
 	const [totalValue, setTotalValue] = useState<string>('R$ 0,00');
 	const [costPerClass, setCostPerClass] = useState<string>('');
 
-	const handleDateChange = (date: Date) => {
-		setSelectDate(date);
-	};
-
 	const handleAddButtonClick = () => {
-		setDates(prevState => [...prevState, selectedDate]);
+		if (selectedDate) {
+			setDates(prevState => [...prevState, selectedDate]);
+		}
 	};
 
 	const handleClearButtonClick = () => {
@@ -33,7 +32,14 @@ const Calendar: FC = () => {
 		}
 	};
 
-	const formatDate = (date: Date) => {
+	const formatDate = (date: Date): string => {
+		if (!date) {
+			const day = (new Date()).getDate() <= 9 ? `0${(new Date()).getDate()}` : (new Date()).getDate();
+			const month = (new Date()).getMonth() <= 9 ? `0${(new Date()).getMonth() + 1}` : (new Date()).getMonth() + 1;
+			const year = (new Date()).getFullYear() <= 9 ? `0${(new Date()).getFullYear()}` : (new Date()).getFullYear();
+			return `${day}/${month}/${year}`;
+		}
+
 		const day = date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate();
 		const month = date.getMonth() <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
 		const year = date.getFullYear() <= 9 ? `0${date.getFullYear()}` : date.getFullYear();
@@ -50,19 +56,18 @@ const Calendar: FC = () => {
 			id='calendar-content'
 			className='flex-column-center'
 		>
-
-			<label
-				htmlFor='class-date'
-				className='flex-column-start'
-			>
-			Data da aula:
+			<div className='flex-column-start'>
 				<DatePicker
 					id='class-date'
 					selected={selectedDate}
-					onChange={handleDateChange}
+					onChange={(date: Date) => {
+						setSelectDate(date);
+					}}
 					dateFormat='dd/MM/yyyy'
+					isClearable
+					placeholderText='Data da aula'
 				/>
-			</label>
+			</div>
 
 			<div>
 				<Button
@@ -108,20 +113,16 @@ const Calendar: FC = () => {
 				}
 			</ul>
 
-			<label
-				htmlFor='cost-per-class'
-				className='flex-column-start mt-5'
-			>
-				Valor/aula:
-				<input
-					id='cost-per-class'
-					type='text'
-					value={costPerClass}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-						setCostPerClass(e.target.value);
-					}}
-				/>
-			</label>
+			<input
+				id='cost-per-class'
+				className='mt-5'
+				type='text'
+				placeholder='Valor/aula'
+				value={costPerClass}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+					setCostPerClass(e.target.value);
+				}}
+			/>
 
 			<Button
 				variant='primary'
@@ -132,6 +133,16 @@ const Calendar: FC = () => {
 			</Button>
 
 			<h2>Valor total: {totalValue}</h2>
+
+			<Button
+				variant='warning'
+				onClick={() => {
+					navigate('/home');
+				}}
+				className='mt-2 mb-5'
+			>
+				Home
+			</Button>
 		</section>
 	);
 };

@@ -12,6 +12,18 @@ code {
     monospace;
 }
 
+.flex-center-evenly {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.flex-center-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .flex-center-around {
   display: flex;
   justify-content: space-around;

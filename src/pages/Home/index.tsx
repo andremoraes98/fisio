@@ -7,7 +7,7 @@ const Home: FC = () => {
 	const navigate = useNavigate();
 	return (
 		<section id='home-content'>
-			<div className='flex-center-around m-3'>
+			<div className='flex-center-around flex-wrap'>
 				<div className='home-button'>
 					<Button
 						onClick={() => {
@@ -29,7 +29,17 @@ const Home: FC = () => {
 				</div>
 			</div>
 
-			<div className='flex-center-around m-3'>
+			<div className='flex-center-around flex-wrap'>
+				<div className='home-button'>
+					<Button
+						onClick={() => {
+							navigate('/edit-customer');
+						}}
+					>
+	Editar aluno
+					</Button>
+				</div>
+
 				<div className='home-button'>
 					<Button
 						onClick={() => {
@@ -37,16 +47,6 @@ const Home: FC = () => {
 						}}
 					>
 					Calcular pagamento
-					</Button>
-				</div>
-
-				<div className='home-button'>
-					<Button
-						onClick={() => {
-							navigate('/edit-customer');
-						}}
-					>
-					Editar aluno
 					</Button>
 				</div>
 			</div>

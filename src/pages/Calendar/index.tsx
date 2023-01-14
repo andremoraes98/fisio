@@ -80,7 +80,7 @@ const Calendar: FC = () => {
 
 				<Button
 					onClick={handleClearButtonClick}
-					variant='secondary'
+					variant='warning'
 					className='m-2'
 				>
 					Limpar
@@ -135,7 +135,7 @@ const Calendar: FC = () => {
 			<h2>Valor total: {totalValue}</h2>
 
 			<Button
-				variant='warning'
+				variant='secondary'
 				onClick={() => {
 					navigate('/home');
 				}}

@@ -31,3 +31,9 @@
   min-width: 200px;
   padding: 0;
 }
+
+#calendar-content input {
+  padding: 5px 10px;
+  border: 1px solid gray;
+  border-radius: 8px;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom';
-import Calendar from './pages/Calendar/Calendar';
-import Login from './pages/Login/Login';
+import Calendar from './pages/Calendar';
+import Login from './pages/Login';
 import Redirect from './pages/Redirect';
 
 function App() {

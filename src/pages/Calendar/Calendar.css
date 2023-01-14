@@ -3,7 +3,7 @@
 }
 
 #calendar-content {
-  height: var(--calendar-height);
+  min-height: var(--calendar-height);
   margin-top: calc((100vh - var(--calendar-height)) / 2);
 }
 
@@ -30,4 +30,12 @@
   max-width: 200px;
   min-width: 200px;
   padding: 0;
+}
+
+#dates-container {
+  text-align: center;
+  margin-top: 10px;
+  border: solid 1px gray;
+  border-radius: 10px;
+  padding: 10px 0;
 }

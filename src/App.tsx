@@ -5,6 +5,7 @@ import CreateCustomer from './pages/CreateCustomer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Redirect from './pages/Redirect';
+import SelectCustomer from './pages/SelectCustomer';
 
 function App() {
 	return (
@@ -12,6 +13,7 @@ function App() {
 			<Route path='/login' element={<Login />}/>
 			<Route path='/home' element={<Home />}/>
 			<Route path='/calendar' element={<Calendar />}/>
+			<Route path='/select-customer' element={<SelectCustomer />}/>
 			<Route path='/create-customer' element={<CreateCustomer />}/>
 			<Route path='/' element={<Redirect />}/>
 		</Routes>

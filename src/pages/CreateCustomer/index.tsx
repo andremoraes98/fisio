@@ -85,6 +85,9 @@ const CreateCustomer: FC = () => {
 					<Button
 						variant='secondary'
 						type='button'
+						onClick={() => {
+							navigate('/home');
+						}}
 					>
             Cancelar
 					</Button>

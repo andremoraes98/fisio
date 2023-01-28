@@ -1,10 +1,16 @@
-import React, {useState, type FC} from 'react';
+import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Form, Button} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
+import UserContext from '../../context/UserContext';
 
 const SelectCustomer: FC = () => {
+	const {users, getUsers, isLoading} = useContext(UserContext)!;
 	const navigate = useNavigate();
 	const [selectValue, setSelectValue] = useState<string>('');
+
+	useEffect(() => {
+		getUsers();
+	}, []);
 
 	return (
 		<Form
@@ -17,9 +23,11 @@ const SelectCustomer: FC = () => {
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					setSelectValue(e.target.value);
 				}}
+				disabled={isLoading}
 			>
 				<option disabled={Boolean(selectValue)}>Selecione um aluno</option>
-				<option value='André'>André</option>
+				{ users.map(({email, name}) => <option key={email} value={name}>{name}</option>)}
+
 			</Form.Select>
 
 			<Button

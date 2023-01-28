@@ -1,16 +1,13 @@
-import React, {useState, type FC} from 'react';
+import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
-
-type FormInfos = {
-	name: string;
-	email: string;
-	password: string;
-};
+import UserContext from '../../context/UserContext';
+import {type InterUser} from '../../context/UserContext';
 
 const CreateCustomer: FC = () => {
+	const {createUser} = useContext(UserContext)!;
 	const navigate = useNavigate();
-	const [formInfos, setFormInfos] = useState<FormInfos>({
+	const [formInfos, setFormInfos] = useState<InterUser>({
 		name: '',
 		email: '',
 		password: '',
@@ -25,6 +22,7 @@ const CreateCustomer: FC = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		createUser(formInfos);
 		navigate('/home');
 	};
 

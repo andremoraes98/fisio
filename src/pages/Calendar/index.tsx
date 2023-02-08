@@ -167,11 +167,11 @@ const Calendar: FC = () => {
 			<Button
 				variant='secondary'
 				onClick={() => {
-					navigate('/home');
+					navigate(-1);
 				}}
 				className='mt-2 mb-5'
 			>
-				Home
+				Cancelar
 			</Button>
 		</section>
 	);

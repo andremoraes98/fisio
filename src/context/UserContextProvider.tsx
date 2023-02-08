@@ -7,6 +7,11 @@ const MAIN_URL = process.env.REACT_APP_MAIN_API ?? 'localhost:3001';
 
 const UserProvider: FC<PropsWithChildren> = ({children}) => {
 	const [users, setUsers] = useState<InterUser[]>([]);
+	const [selectedUser, setSelectedUser] = useState<InterUser>({
+		email: '',
+		name: '',
+		_id: '',
+	});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const getUsers = async () => {
@@ -26,11 +31,46 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 	const createUser = async (userInfo: InterUser) => {
 		setIsLoading(true);
 		try {
-			await fetch(`${MAIN_URL}/user`, {
+			const response = await fetch(`${MAIN_URL}/user`, {
 				method: 'PUT',
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify(userInfo),
 			});
+
+			return response.status;
+		} catch (e: any) {
+			console.log(e.message);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	const editUser = async (id: string, userInfo: InterUser) => {
+		setIsLoading(true);
+		try {
+			const response = await fetch(`${MAIN_URL}/user/${id}`, {
+				method: 'POST',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify(userInfo),
+			});
+
+			return response.status;
+		} catch (e: any) {
+			console.log(e.message);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
+	const deleteUser = async (id: string) => {
+		setIsLoading(true);
+		try {
+			const response = await fetch(`${MAIN_URL}/user/${id}`, {
+				method: 'DELETE',
+				headers: {'Content-Type': 'application/json'},
+			});
+
+			return response.status;
 		} catch (e: any) {
 			console.log(e.message);
 		} finally {
@@ -44,6 +84,10 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		users,
 		getUsers,
 		createUser,
+		editUser,
+		deleteUser,
+		selectedUser,
+		setSelectedUser,
 	};
 
 	return (

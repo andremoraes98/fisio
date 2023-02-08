@@ -1,8 +1,7 @@
 import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
-import UserContext from '../../context/UserContext';
-import {type InterUser} from '../../context/UserContext';
+import UserContext, {type InterUser} from '../../../context/UserContext';
 
 const CreateCustomer: FC = () => {
 	const {createUser} = useContext(UserContext)!;
@@ -20,10 +19,15 @@ const CreateCustomer: FC = () => {
 		setFormInfos(prevState => ({...prevState, [id]: value}));
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		createUser(formInfos);
-		navigate('/home');
+		const status = await createUser(formInfos);
+
+		if (status !== 201) {
+			throw new Error('Algo deu errado');
+		}
+
+		navigate(-1);
 	};
 
 	return (
@@ -84,7 +88,7 @@ const CreateCustomer: FC = () => {
 						variant='secondary'
 						type='button'
 						onClick={() => {
-							navigate('/home');
+							navigate(-1);
 						}}
 					>
             Cancelar

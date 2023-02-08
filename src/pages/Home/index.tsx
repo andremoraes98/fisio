@@ -6,47 +6,25 @@ import './Home.css';
 const Home: FC = () => {
 	const navigate = useNavigate();
 	return (
-		<section id='home-content'>
+		<section className='main-container'>
 			<div className='flex-center-around flex-wrap'>
 				<div className='home-button'>
 					<Button
 						onClick={() => {
-							navigate('/select-customer');
+							navigate('/manage-customer');
 						}}
 					>
-						Selecionar aluno
+						Gerenciar aluno
 					</Button>
 				</div>
 
 				<div className='home-button'>
 					<Button
 						onClick={() => {
-							navigate('/create-customer');
+							navigate('/manage-class');
 						}}
 					>
-						Cadastrar aluno
-					</Button>
-				</div>
-			</div>
-
-			<div className='flex-center-around flex-wrap'>
-				<div className='home-button'>
-					<Button
-						onClick={() => {
-							navigate('/edit-customer');
-						}}
-					>
-	Editar aluno
-					</Button>
-				</div>
-
-				<div className='home-button'>
-					<Button
-						onClick={() => {
-							navigate('/calendar');
-						}}
-					>
-					Calcular pagamento
+						Gerenciar aulas
 					</Button>
 				</div>
 			</div>

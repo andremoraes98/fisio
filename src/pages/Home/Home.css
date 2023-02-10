@@ -1,8 +1,8 @@
-#home-content {
+.main-container {
   margin-top: calc((100vh - 250px) / 2);
 }
 
-#home-content button {
+.main-container button {
   width: 100%;
   height: 100%;
 }

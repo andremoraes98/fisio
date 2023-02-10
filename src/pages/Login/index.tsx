@@ -1,4 +1,4 @@
-import React, {type ChangeEvent, useState, useEffect, type SetStateAction} from 'react';
+import React, {useState, type FC} from 'react';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
@@ -10,7 +10,7 @@ type LoginForm = {
 	password: string;
 };
 
-const Login = () => {
+const Login: FC = () => {
 	const navigate = useNavigate();
 	const [credentials, setCredentials] = useState<LoginForm>({email: '', password: ''});
 	const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);

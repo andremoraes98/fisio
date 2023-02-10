@@ -1,9 +1,8 @@
 import React, {type FC} from 'react';
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
-import './Home.css';
 
-const Home: FC = () => {
+const ManageCustomer: FC = () => {
 	const navigate = useNavigate();
 	return (
 		<section className='main-container flex-column-center'>
@@ -11,36 +10,37 @@ const Home: FC = () => {
 				<div className='home-button'>
 					<Button
 						onClick={() => {
-							navigate('/manage-customer');
+							navigate('/select-customer');
 						}}
 					>
-						Gerenciar aluno
+          Escolher aluno
 					</Button>
 				</div>
 
 				<div className='home-button'>
 					<Button
 						onClick={() => {
-							navigate('/manage-class');
+							navigate('/create-customer');
 						}}
 					>
-						Gerenciar aulas
+          Cadastrar aluno
 					</Button>
 				</div>
 			</div>
 
 			<div className='home-button'>
 				<Button
-					variant='danger'
+					type='submit'
+					variant='secondary'
 					onClick={() => {
-						navigate('/login');
+						navigate(-1);
 					}}
 				>
-					Logoff
+					Cancelar
 				</Button>
 			</div>
 		</section>
 	);
 };
 
-export default Home;
+export default ManageCustomer;

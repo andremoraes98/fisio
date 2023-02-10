@@ -1,5 +1,5 @@
 import React, {useState, type FC, type PropsWithChildren} from 'react';
-import type {InterUser} from './UserContext';
+import type {InterCredentials, InterUser} from './UserContext';
 import UserContext from './UserContext';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -78,6 +78,23 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		}
 	};
 
+	const checkLoginCredentials = async (credentials: InterCredentials) => {
+		setIsLoading(true);
+		try {
+			const response = await fetch(`${MAIN_URL}/login`, {
+				method: 'POST',
+				headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify(credentials),
+			});
+
+			return response;
+		} catch (e: any) {
+			console.log(e.message);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	const context = {
 		isLoading,
 		setIsLoading,
@@ -86,6 +103,7 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		createUser,
 		editUser,
 		deleteUser,
+		checkLoginCredentials,
 		selectedUser,
 		setSelectedUser,
 	};

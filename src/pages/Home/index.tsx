@@ -6,8 +6,8 @@ import './Home.css';
 const Home: FC = () => {
 	const navigate = useNavigate();
 	return (
-		<section className='main-container'>
-			<div className='flex-center-around flex-wrap'>
+		<section className='main-container flex-column-center'>
+			<div className='flex-center-evenly flex-wrap'>
 				<div className='home-button'>
 					<Button
 						onClick={() => {
@@ -27,6 +27,17 @@ const Home: FC = () => {
 						Gerenciar aulas
 					</Button>
 				</div>
+			</div>
+
+			<div className='home-button'>
+				<Button
+					variant='danger'
+					onClick={() => {
+						navigate('/login');
+					}}
+				>
+					Logoff
+				</Button>
 			</div>
 		</section>
 	);

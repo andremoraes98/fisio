@@ -1,42 +1,41 @@
-import React, {useState, type FC} from 'react';
+import React, {useContext, useState, type FC} from 'react';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
+import UserContext, {type InterCredentials} from '../../context/UserContext';
 import './Login.css';
-
-type LoginForm = {
-	email: string;
-	password: string;
-};
 
 const Login: FC = () => {
 	const navigate = useNavigate();
-	const [credentials, setCredentials] = useState<LoginForm>({email: '', password: ''});
+	const {checkLoginCredentials} = useContext(UserContext)!;
+	const [credentials, setCredentials] = useState<InterCredentials>({email: '', password: ''});
 	const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
-	const correctCredentials: LoginForm = {
-		email: 'andre.moraes.98@gmail.com',
-		password: '123456',
-	};
 
 	const isDisabled = credentials.email.length < 10 || credentials.password.length < 5;
 
 	const handleCredentialsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const {target: {id, value}} = e;
-		setCredentials((prevState: LoginForm) => ({
+		setCredentials(prevState => ({
 			...prevState,
 			[id]: value,
 		}));
 		setErrorMessage(undefined);
 	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		if (credentials.email === correctCredentials.email && credentials.password === correctCredentials.password) {
-			navigate('/home');
-		} else {
-			e.preventDefault();
-			setErrorMessage('Email ou senha incorretos');
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const response = (await checkLoginCredentials(credentials))!;
+
+		if (response.status !== 200) {
+			const {message} = await response.json() as {message: string};
+			setErrorMessage(message);
+			return;
 		}
+
+		const {token} = await response.json() as {token: string};
+		localStorage.setItem('token', token);
+		navigate('/home');
 	};
 
 	return (

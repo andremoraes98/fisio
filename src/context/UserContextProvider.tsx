@@ -11,6 +11,7 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		email: '',
 		name: '',
 		_id: '',
+		role: 'user',
 	});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -30,6 +31,7 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 
 	const createUser = async (userInfo: InterUser) => {
 		setIsLoading(true);
+		console.log(userInfo);
 		try {
 			const response = await fetch(`${MAIN_URL}/user`, {
 				method: 'PUT',

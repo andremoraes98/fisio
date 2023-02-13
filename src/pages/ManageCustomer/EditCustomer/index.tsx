@@ -10,17 +10,24 @@ const EditCustomer: FC = () => {
 			_id,
 			name: selectedName,
 			email: selectedEmail,
+			role: selectedRole,
 		},
 		editUser,
 	} = useContext(UserContext)!;
 	const [formInfos, setFormInfos] = useState<InterUser>({
 		name: selectedName,
 		email: selectedEmail,
+		role: selectedRole,
 	});
 
-	const {name, email} = formInfos;
+	const {name, email, role} = formInfos;
 
 	const handleInputFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const {id, value} = e.target;
+		setFormInfos(prevState => ({...prevState, [id]: value}));
+	};
+
+	const handleSelectFormChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const {id, value} = e.target;
 		setFormInfos(prevState => ({...prevState, [id]: value}));
 	};
@@ -70,11 +77,24 @@ const EditCustomer: FC = () => {
 				/>
 			</FloatingLabel>
 
-			<div className='flex-center-around'>
+			<Form.Select
+				id='role'
+				className='login-input'
+				style={{padding: '1rem 0.75rem'}}
+				value={role}
+				onChange={handleSelectFormChange}
+			>
+				<option disabled={Boolean(role)}>Selecione um aluno</option>
+				<option value='user'>Aluno</option>
+				<option value='admin'>Administrador</option>
+			</Form.Select>
+
+			<div className='flex-row-center flex-wrap'>
 				<div>
 					<Button
 						variant='success'
 						type='submit'
+						className='small-button'
 					>
             Editar
 					</Button>
@@ -84,6 +104,7 @@ const EditCustomer: FC = () => {
 					<Button
 						variant='secondary'
 						type='button'
+						className='small-button'
 						onClick={() => {
 							navigate(-1);
 						}}

@@ -7,7 +7,7 @@ const ManageCustomer: FC = () => {
 	return (
 		<section className='main-container flex-column-center'>
 			<div className='flex-center-evenly flex-wrap'>
-				<div className='home-button'>
+				<div className='large-button'>
 					<Button
 						onClick={() => {
 							navigate('/select-customer');
@@ -17,7 +17,7 @@ const ManageCustomer: FC = () => {
 					</Button>
 				</div>
 
-				<div className='home-button'>
+				<div className='large-button'>
 					<Button
 						onClick={() => {
 							navigate('/create-customer');
@@ -28,7 +28,7 @@ const ManageCustomer: FC = () => {
 				</div>
 			</div>
 
-			<div className='home-button'>
+			<div className='large-button'>
 				<Button
 					type='submit'
 					variant='secondary'

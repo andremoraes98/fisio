@@ -62,7 +62,7 @@ const SelectCustomer: FC = () => {
 			</div>
 
 			<div className='flex-center-evenly flex-wrap'>
-				<div className='home-button'>
+				<div className='large-button'>
 					<Button
 						onClick={() => {
 							navigate('/calendar');
@@ -74,7 +74,7 @@ const SelectCustomer: FC = () => {
 					</Button>
 				</div>
 
-				<div className='home-button'>
+				<div className='large-button'>
 					<Button
 						onClick={() => {
 							navigate('/edit-customer');
@@ -85,7 +85,7 @@ const SelectCustomer: FC = () => {
 					</Button>
 				</div>
 
-				<div className='home-button'>
+				<div className='large-button'>
 					<Button
 						type='button'
 						onClick={handleDeleteButtonClick}
@@ -97,7 +97,7 @@ const SelectCustomer: FC = () => {
 				</div>
 			</div>
 
-			<div className='home-button mx-auto'>
+			<div className='large-button mx-auto'>
 				<Button
 					type='button'
 					variant='secondary'

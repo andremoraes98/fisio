@@ -8,7 +8,7 @@ const Home: FC = () => {
 	return (
 		<section className='main-container flex-column-center'>
 			<div className='flex-center-evenly flex-wrap'>
-				<div className='home-button'>
+				<div className='large-button'>
 					<Button
 						onClick={() => {
 							navigate('/manage-customer');
@@ -18,7 +18,7 @@ const Home: FC = () => {
 					</Button>
 				</div>
 
-				<div className='home-button'>
+				<div className='large-button'>
 					<Button
 						onClick={() => {
 							navigate('/manage-class');
@@ -29,7 +29,7 @@ const Home: FC = () => {
 				</div>
 			</div>
 
-			<div className='home-button'>
+			<div className='large-button'>
 				<Button
 					variant='danger'
 					onClick={() => {

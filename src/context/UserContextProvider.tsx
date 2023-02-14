@@ -15,10 +15,15 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 	});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
+	const roleOptions: Array<{value: string; label: string}> = [
+		{label: 'Aluno', value: 'user'},
+		{label: 'Administrador', value: 'admin'},
+	];
+
 	const getUsers = async () => {
 		setIsLoading(true);
 		try {
-			const response = await fetch(`${MAIN_URL}/user`);
+			const response = await fetch(`${MAIN_URL}/user/role/user`);
 			const fetchedUsers = await response.json() as InterUser[];
 
 			setUsers(fetchedUsers);
@@ -108,6 +113,7 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		checkLoginCredentials,
 		selectedUser,
 		setSelectedUser,
+		roleOptions,
 	};
 
 	return (

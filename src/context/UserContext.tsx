@@ -24,6 +24,7 @@ export type InterContext = {
 	checkLoginCredentials: (credentials: InterCredentials) => Promise<Response | undefined>;
 	selectedUser: InterUser;
 	setSelectedUser: (userInfo: InterUser) => void;
+	roleOptions: Array<{value: string; label: string}>;
 };
 
 const UserContext = createContext<InterContext | undefined>(undefined);

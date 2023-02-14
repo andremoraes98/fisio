@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Form, Button} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
+import ReactSelect, {type SingleValue} from 'react-select';
 import UserContext from '../../../context/UserContext';
 import './style.css';
 
@@ -14,19 +16,26 @@ const SelectCustomer: FC = () => {
 		selectedUser: {_id},
 	} = useContext(UserContext)!;
 	const navigate = useNavigate();
-	const [selectValue, setSelectValue] = useState<string>('');
+
+	const [selectValue, setSelectValue] = useState<SingleValue<{
+		value: string | undefined;
+		label: string;
+	}> | null>(null);
 
 	useEffect(() => {
 		getUsers();
 	}, []);
 
-	const handleSelectCutomer = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const selectedUser = users.find(({_id}) => _id === e.target.value);
+	const handleSelectCutomer = (target: SingleValue<{
+		value: string | undefined;
+		label: string;
+	}>) => {
+		const selectedUser = users.find(({_id}) => _id === target?.value);
 		if (selectedUser) {
 			setSelectedUser(selectedUser);
 		}
 
-		setSelectValue(e.target.value);
+		setSelectValue(target);
 	};
 
 	const handleDeleteButtonClick = async () => {
@@ -50,16 +59,15 @@ const SelectCustomer: FC = () => {
 				navigate('/calendar');
 			}}
 		>
-			<div id='user-select'>
-				<Form.Select
-					value={selectValue}
-					onChange={handleSelectCutomer}
-					disabled={isLoading}
-				>
-					<option disabled={Boolean(selectValue)}>Selecione um aluno</option>
-					{ users.map(({_id, name}) => <option key={_id} value={_id}>{name}</option>)}
-				</Form.Select>
-			</div>
+			<ReactSelect
+				isDisabled={isLoading}
+				className='login-input'
+				options={users.map(user => ({label: user.name, value: user._id}))}
+				value={selectValue}
+				onChange={handleSelectCutomer}
+				isClearable
+				placeholder='Selecione um aluno...'
+			/>
 
 			<div className='flex-center-evenly flex-wrap'>
 				<div className='large-button'>

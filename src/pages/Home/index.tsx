@@ -5,6 +5,12 @@ import './Home.css';
 
 const Home: FC = () => {
 	const navigate = useNavigate();
+
+	const execLogoffActions = () => {
+		localStorage.removeItem('token');
+		navigate('/login');
+	};
+
 	return (
 		<section className='main-container flex-column-center'>
 			<div className='flex-center-evenly flex-wrap'>
@@ -32,9 +38,7 @@ const Home: FC = () => {
 			<div className='large-button'>
 				<Button
 					variant='danger'
-					onClick={() => {
-						navigate('/login');
-					}}
+					onClick={execLogoffActions}
 				>
 					Logoff
 				</Button>

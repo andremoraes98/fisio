@@ -1,6 +1,7 @@
 import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
+import ReactSelect, {type SingleValue} from 'react-select';
 import UserContext, {type InterUser} from '../../../context/UserContext';
 
 const EditCustomer: FC = () => {
@@ -13,14 +14,20 @@ const EditCustomer: FC = () => {
 			role: selectedRole,
 		},
 		editUser,
+		roleOptions,
 	} = useContext(UserContext)!;
 	const [formInfos, setFormInfos] = useState<InterUser>({
 		name: selectedName,
 		email: selectedEmail,
 		role: selectedRole,
+		password: '',
 	});
+	const [selectRole, setSelectRole] = useState<SingleValue<{
+		value: string | undefined;
+		label: string;
+	}> | undefined>(null);
 
-	const {name, email, role} = formInfos;
+	const {name, email, role, password} = formInfos;
 
 	const handleInputFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const {id, value} = e.target;
@@ -45,6 +52,19 @@ const EditCustomer: FC = () => {
 		}
 
 		navigate(-1);
+	};
+
+	const handleSelectRole = (target: SingleValue<{
+		value: string | undefined;
+		label: string;
+	}>) => {
+		setSelectRole(target);
+
+		if (!target) {
+			return;
+		}
+
+		setFormInfos(prevState => ({...prevState, role: target.value as 'admin' | 'user'}));
 	};
 
 	return (
@@ -77,17 +97,31 @@ const EditCustomer: FC = () => {
 				/>
 			</FloatingLabel>
 
-			<Form.Select
-				id='role'
+			<ReactSelect
 				className='login-input'
-				style={{padding: '1rem 0.75rem'}}
-				value={role}
-				onChange={handleSelectFormChange}
+				options={roleOptions}
+				value={roleOptions.find(({value}) => selectedRole === value)}
+				onChange={handleSelectRole}
+				isClearable
+				placeholder='Selecione um cargo...'
+				isSearchable={false}
+				styles={{
+					indicatorsContainer: base => ({...base, padding: '10px 0'}),
+				}}
+			/>
+
+			<FloatingLabel
+				controlId='password'
+				label='Senha'
+				className='login-input'
 			>
-				<option disabled={Boolean(role)}>Selecione um aluno</option>
-				<option value='user'>Aluno</option>
-				<option value='admin'>Administrador</option>
-			</Form.Select>
+				<Form.Control
+					type='password'
+					placeholder='Senha'
+					value={password}
+					onChange={handleInputFormChange}
+				/>
+			</FloatingLabel>
 
 			<div className='flex-row-center flex-wrap'>
 				<div>

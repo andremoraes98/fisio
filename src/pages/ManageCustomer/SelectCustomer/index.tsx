@@ -9,11 +9,12 @@ import './style.css';
 const SelectCustomer: FC = () => {
 	const {
 		users,
+		getAllRegistered,
 		getUsers,
 		isLoading,
 		setSelectedUser,
 		deleteUser,
-		selectedUser: {_id},
+		selectedUser: {_id, role},
 	} = useContext(UserContext)!;
 	const navigate = useNavigate();
 
@@ -21,9 +22,10 @@ const SelectCustomer: FC = () => {
 		value: string | undefined;
 		label: string;
 	}> | null>(null);
+	const [onlyUser, setOnlyUser] = useState<boolean>(false);
 
 	useEffect(() => {
-		getUsers();
+		getAllRegistered();
 	}, []);
 
 	const handleSelectCutomer = (target: SingleValue<{
@@ -52,6 +54,19 @@ const SelectCustomer: FC = () => {
 		window.location.reload();
 	};
 
+	const handleOnlyUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const fetchOnlyUser = e.target.checked;
+
+		if (fetchOnlyUser) {
+			getUsers();
+		} else {
+			getAllRegistered();
+		}
+
+		setOnlyUser(prevState => !prevState);
+		handleSelectCutomer(null);
+	};
+
 	return (
 		<Form
 			className='main-container'
@@ -69,19 +84,34 @@ const SelectCustomer: FC = () => {
 				placeholder='Selecione um aluno...'
 			/>
 
-			<div className='flex-center-evenly flex-wrap'>
-				<div className='large-button'>
-					<Button
-						onClick={() => {
-							navigate('/calendar');
-						}}
-						variant='success'
-						disabled={!selectValue}
-					>
-						Calcular pagamento
-					</Button>
-				</div>
+			<label className='flex-row-center' htmlFor='user-only'>
+				<input
+					value='user-only'
+					checked={onlyUser}
+					onChange={handleOnlyUserInputChange}
+					id='user-only'
+					type='checkbox'
+					style={{
+						marginRight: '10px',
+					}}
+				/>
+				Alunos apenas
+			</label>
 
+			<div className='flex-center-evenly flex-wrap'>
+				{ role === 'user' && (
+					<div className='large-button'>
+						<Button
+							onClick={() => {
+								navigate('/calendar');
+							}}
+							variant='success'
+							disabled={!selectValue}
+						>
+							Calcular pagamento
+						</Button>
+					</div>
+				)}
 				<div className='large-button'>
 					<Button
 						onClick={() => {
@@ -89,7 +119,7 @@ const SelectCustomer: FC = () => {
 						}}
 						disabled={!selectValue}
 					>
-						Editar aluno
+						Editar
 					</Button>
 				</div>
 
@@ -100,7 +130,7 @@ const SelectCustomer: FC = () => {
 						variant='danger'
 						disabled={!selectValue}
 					>
-						Excluir aluno
+						Excluir
 					</Button>
 				</div>
 			</div>

@@ -20,6 +20,20 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		{label: 'Administrador', value: 'admin'},
 	];
 
+	const getAllRegistered = async () => {
+		setIsLoading(true);
+		try {
+			const response = await fetch(`${MAIN_URL}/user`);
+			const fetchedUsers = await response.json() as InterUser[];
+
+			setUsers(fetchedUsers);
+		} catch (e: any) {
+			console.log(e.message);
+		} finally {
+			setIsLoading(false);
+		}
+	};
+
 	const getUsers = async () => {
 		setIsLoading(true);
 		try {
@@ -106,6 +120,7 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		isLoading,
 		setIsLoading,
 		users,
+		getAllRegistered,
 		getUsers,
 		createUser,
 		editUser,

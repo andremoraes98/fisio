@@ -17,6 +17,7 @@ export type InterContext = {
 	users: InterUser[];
 	isLoading: boolean;
 	setIsLoading: Dispatch<SetStateAction<boolean>>;
+	getAllRegistered: () => void;
 	getUsers: () => void;
 	createUser: (userInfo: InterUser) => Promise<number | undefined>;
 	editUser: (id: string, userInfo: InterUser) => Promise<number | undefined>;

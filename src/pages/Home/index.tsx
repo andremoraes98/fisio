@@ -30,7 +30,7 @@ const Home: FC = () => {
 							navigate('/manage-class');
 						}}
 					>
-						Gerenciar aulas
+						Gerenciar exercícios
 					</Button>
 				</div>
 			</div>

@@ -4,6 +4,7 @@ import Calendar from './pages/Calendar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import ManageCustomer from './pages/ManageCustomer';
+import ManageClass from './pages/ManageClass';
 import CreateCustomer from './pages/ManageCustomer/CreateCustomer';
 import EditCustomer from './pages/ManageCustomer/EditCustomer';
 import SelectCustomer from './pages/ManageCustomer/SelectCustomer';
@@ -17,6 +18,7 @@ function App() {
 			<Route path='/calendar' element={<Calendar />}/>
 			<Route path='/select-customer' element={<SelectCustomer />}/>
 			<Route path='/manage-customer' element={<ManageCustomer />}/>
+			<Route path='/manage-class' element={<ManageClass />}/>
 			<Route path='/edit-customer' element={<EditCustomer />}/>
 			<Route path='/create-customer' element={<CreateCustomer />}/>
 			<Route path='/' element={<Redirect />}/>

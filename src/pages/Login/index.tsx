@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
-import UserContext, {type InterCredentials} from '../../context/UserContext';
+import UserContext, {type InterCredentials} from '../../context/User/UserContext';
 import './Login.css';
 
 const Login: FC = () => {

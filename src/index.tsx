@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import UserProvider from './context/UserContextProvider';
+import UserProvider from './context/User/UserContextProvider';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root')!,

@@ -2,7 +2,7 @@ import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type SingleValue} from 'react-select';
-import UserContext, {type InterUser} from '../../../context/UserContext';
+import UserContext, {type InterUser} from '../../../context/User/UserContext';
 
 const EditCustomer: FC = () => {
 	const navigate = useNavigate();

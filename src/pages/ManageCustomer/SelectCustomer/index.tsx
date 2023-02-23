@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Form, Button} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type SingleValue} from 'react-select';
-import UserContext from '../../../context/UserContext';
+import UserContext from '../../../context/User/UserContext';
 import './style.css';
 
 const SelectCustomer: FC = () => {

@@ -26,11 +26,6 @@ const CreateCustomer: FC = () => {
 		setFormInfos(prevState => ({...prevState, [id]: value}));
 	};
 
-	const handleSelectFormChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		const {id, value} = e.target;
-		setFormInfos(prevState => ({...prevState, [id]: value}));
-	};
-
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 

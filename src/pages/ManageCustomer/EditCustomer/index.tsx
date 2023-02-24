@@ -25,7 +25,7 @@ const EditCustomer: FC = () => {
 	const [selectRole, setSelectRole] = useState<SingleValue<{
 		value: string | undefined;
 		label: string;
-	}> | undefined>(null);
+	}> | undefined>(roleOptions.find(({value}) => value === selectedRole));
 
 	const {name, email, role, password} = formInfos;
 
@@ -95,9 +95,8 @@ const EditCustomer: FC = () => {
 			<ReactSelect
 				className='login-input'
 				options={roleOptions}
-				value={roleOptions.find(({value}) => selectedRole === value)}
+				value={selectRole}
 				onChange={handleSelectRole}
-				isClearable
 				placeholder='Selecione um cargo...'
 				isSearchable={false}
 				styles={{

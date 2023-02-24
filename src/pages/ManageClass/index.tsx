@@ -3,18 +3,19 @@ import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Form, Button} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type SingleValue} from 'react-select';
-import UserContext from '../../context/User/UserContext';
+import ExerciseContext from '../../context/Exercise/ExerciseContext';
+import {MdAdd} from 'react-icons/md';
 import './style.css';
 
 const SelectCustomer: FC = () => {
 	const {
-		users,
-		getAllRegistered,
+		exercises,
+		getAllExercise,
 		isLoading,
-		setSelectedUser,
-		deleteUser,
-		selectedUser: {_id, role},
-	} = useContext(UserContext)!;
+		selectedExercise: {_id},
+		setSelectedExercise,
+		deleteExercise,
+	} = useContext(ExerciseContext)!;
 	const navigate = useNavigate();
 
 	const [selectValue, setSelectValue] = useState<SingleValue<{
@@ -23,16 +24,17 @@ const SelectCustomer: FC = () => {
 	}> | null>(null);
 
 	useEffect(() => {
-		getAllRegistered();
+		getAllExercise();
 	}, []);
 
-	const handleSelectCutomer = (target: SingleValue<{
+	const handleSelectExercise = (target: SingleValue<{
 		value: string | undefined;
 		label: string;
 	}>) => {
-		const selectedUser = users.find(({_id}) => _id === target?.value);
+		const selectedUser = exercises.find(({_id}) => _id === target?.value);
+
 		if (selectedUser) {
-			setSelectedUser(selectedUser);
+			setSelectedExercise(selectedUser);
 		}
 
 		setSelectValue(target);
@@ -43,7 +45,7 @@ const SelectCustomer: FC = () => {
 			return;
 		}
 
-		const status = await deleteUser(_id);
+		const status = await deleteExercise(_id);
 
 		if (status !== 204) {
 			throw new Error('Algo deu errado');
@@ -59,21 +61,36 @@ const SelectCustomer: FC = () => {
 				navigate('/calendar');
 			}}
 		>
-			<ReactSelect
-				isDisabled={isLoading}
-				className='login-input'
-				options={users.map(user => ({label: user.name, value: user._id}))}
-				value={selectValue}
-				onChange={handleSelectCutomer}
-				isClearable
-				placeholder='Selecione um exercício...'
-			/>
+			<div className='flex-row-center flex-wrap'>
+				<ReactSelect
+					isDisabled={isLoading}
+					className='rselect-input'
+					options={exercises.map(({name, _id}) => ({label: name, value: _id}))}
+					value={selectValue}
+					onChange={handleSelectExercise}
+					isClearable
+					placeholder='Selecione um exercício...'
+				/>
+
+				<div className='icon-button'>
+					<Button
+						type='button'
+						variant='success'
+						className='flex-row-center'
+						onClick={() => {
+							navigate('/create-class');
+						}}
+					>
+						<MdAdd size={20}/>
+					</Button>
+				</div>
+			</div>
 
 			<div className='flex-center-evenly flex-wrap'>
 				<div className='large-button'>
 					<Button
 						onClick={() => {
-							navigate('/edit-customer');
+							navigate('/edit-class');
 						}}
 						disabled={!selectValue}
 					>

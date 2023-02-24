@@ -5,7 +5,7 @@ import ExerciseContext from './ExerciseContext';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const MAIN_URL = process.env.REACT_APP_MAIN_API ?? 'localhost:3001';
 
-const UserProvider: FC<PropsWithChildren> = ({children}) => {
+const ExerciseProvider: FC<PropsWithChildren> = ({children}) => {
 	const [exercises, setExercises] = useState<InterExercise[]>([]);
 	const [selectedExercise, setSelectedExercise] = useState<InterExercise>({
 		_id: '',
@@ -26,13 +26,13 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		{label: 'Glúteo', value: 'Glúteo'},
 	];
 
-	const getAllRegistered = async () => {
+	const getAllExercise = async () => {
 		setIsLoading(true);
 		try {
-			const response = await fetch(`${MAIN_URL}/user`);
-			const fetchedUsers = await response.json() as InterExercise[];
+			const response = await fetch(`${MAIN_URL}/exercise`);
+			const fetchedExercises = await response.json() as InterExercise[];
 
-			setExercises(fetchedUsers);
+			setExercises(fetchedExercises);
 		} catch (e: any) {
 			console.log(e.message);
 		} finally {
@@ -40,25 +40,11 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		}
 	};
 
-	const getUsers = async () => {
-		setIsLoading(true);
-		try {
-			const response = await fetch(`${MAIN_URL}/user/role/user`);
-			const fetchedUsers = await response.json() as InterExercise[];
-
-			setExercises(fetchedUsers);
-		} catch (e: any) {
-			console.log(e.message);
-		} finally {
-			setIsLoading(false);
-		}
-	};
-
-	const createUser = async (userInfo: InterExercise) => {
+	const createExercise = async (userInfo: InterExercise) => {
 		setIsLoading(true);
 		console.log(userInfo);
 		try {
-			const response = await fetch(`${MAIN_URL}/user`, {
+			const response = await fetch(`${MAIN_URL}/exercise`, {
 				method: 'PUT',
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify(userInfo),
@@ -72,13 +58,13 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		}
 	};
 
-	const editUser = async (id: string, userInfo: InterExercise) => {
+	const editExercise = async (id: string, exerciseInfo: InterExercise) => {
 		setIsLoading(true);
 		try {
-			const response = await fetch(`${MAIN_URL}/user/${id}`, {
+			const response = await fetch(`${MAIN_URL}/exercise/${id}`, {
 				method: 'POST',
 				headers: {'Content-Type': 'application/json'},
-				body: JSON.stringify(userInfo),
+				body: JSON.stringify(exerciseInfo),
 			});
 
 			return response.status;
@@ -89,10 +75,10 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		}
 	};
 
-	const deleteUser = async (id: string) => {
+	const deleteExercise = async (id: string) => {
 		setIsLoading(true);
 		try {
-			const response = await fetch(`${MAIN_URL}/user/${id}`, {
+			const response = await fetch(`${MAIN_URL}/exercise/${id}`, {
 				method: 'DELETE',
 				headers: {'Content-Type': 'application/json'},
 			});
@@ -108,15 +94,14 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 	const context = {
 		isLoading,
 		setIsLoading,
-		users: exercises,
-		getAllRegistered,
-		getUsers,
-		createUser,
-		editUser,
-		deleteUser,
-		selectedUser: selectedExercise,
-		setSelectedUser: setSelectedExercise,
-		roleOptions: muscleOptions,
+		exercises,
+		getAllExercise,
+		createExercise,
+		editExercise,
+		deleteExercise,
+		selectedExercise,
+		setSelectedExercise,
+		muscleOptions,
 	};
 
 	return (
@@ -126,4 +111,4 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 	);
 };
 
-export default UserProvider;
+export default ExerciseProvider;

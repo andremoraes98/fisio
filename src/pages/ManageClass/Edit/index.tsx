@@ -1,33 +1,32 @@
 import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
-import ReactSelect, {type SingleValue} from 'react-select';
-import UserContext, {type InterUser} from '../../../context/User/UserContext';
+import ReactSelect, {type MultiValue, type SingleValue} from 'react-select';
+import ExerciseContext, {type InterExercise} from '../../../context/Exercise/ExerciseContext';
 
 const EditCustomer: FC = () => {
 	const navigate = useNavigate();
 	const {
-		selectedUser: {
+		selectedExercise: {
 			_id,
 			name: selectedName,
-			email: selectedEmail,
-			role: selectedRole,
+			link: selectedLink,
+			muscle: selectedMuscles,
 		},
-		editUser,
-		roleOptions,
-	} = useContext(UserContext)!;
-	const [formInfos, setFormInfos] = useState<InterUser>({
+		muscleOptions,
+		editExercise,
+	} = useContext(ExerciseContext)!;
+	const [formInfos, setFormInfos] = useState<InterExercise>({
 		name: selectedName,
-		email: selectedEmail,
-		role: selectedRole,
-		password: '',
+		link: selectedLink,
+		muscle: selectedMuscles,
 	});
-	const [selectRole, setSelectRole] = useState<SingleValue<{
-		value: string | undefined;
-		label: string;
-	}> | undefined>(null);
+	const {name, link, muscle} = formInfos;
 
-	const {name, email, role, password} = formInfos;
+	const [selectMuscles, setSelectMuscles] = useState<Array<{
+		value: string;
+		label: string;
+	}> | undefined>(muscle.map(item => ({value: item, label: item})));
 
 	const handleInputFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const {id, value} = e.target;
@@ -40,7 +39,7 @@ const EditCustomer: FC = () => {
 		}
 
 		e.preventDefault();
-		const status = await editUser(_id, formInfos);
+		const status = await editExercise(_id, formInfos);
 
 		if (status !== 204) {
 			throw new Error('Algo deu errado');
@@ -49,17 +48,20 @@ const EditCustomer: FC = () => {
 		navigate(-1);
 	};
 
-	const handleSelectRole = (target: SingleValue<{
-		value: string | undefined;
+	const handleSelectRole = (target: MultiValue<{
+		value: string;
 		label: string;
-	}>) => {
-		setSelectRole(target);
+	}> | undefined) => {
+		setSelectMuscles(target as Array<{
+			value: string;
+			label: string;
+		}>);
 
 		if (!target) {
 			return;
 		}
 
-		setFormInfos(prevState => ({...prevState, role: target.value as 'admin' | 'user'}));
+		setFormInfos(prevState => ({...prevState, muscle: target.map(({label}) => label)}));
 	};
 
 	return (
@@ -80,43 +82,30 @@ const EditCustomer: FC = () => {
 			</FloatingLabel>
 
 			<FloatingLabel
-				controlId='email'
-				label='Email'
+				controlId='link'
+				label='Link'
 				className='login-input'
 			>
 				<Form.Control
-					type='email'
+					type='link'
 					placeholder='name@example.com'
-					value={email}
+					value={link}
 					onChange={handleInputFormChange}
 				/>
 			</FloatingLabel>
 
 			<ReactSelect
 				className='login-input'
-				options={roleOptions}
-				value={roleOptions.find(({value}) => selectedRole === value)}
+				options={muscleOptions}
+				value={selectMuscles}
 				onChange={handleSelectRole}
 				isClearable
-				placeholder='Selecione um cargo...'
-				isSearchable={false}
+				isMulti
+				placeholder='Selecione os músculos...'
 				styles={{
 					indicatorsContainer: base => ({...base, padding: '10px 0'}),
 				}}
 			/>
-
-			<FloatingLabel
-				controlId='password'
-				label='Senha'
-				className='login-input'
-			>
-				<Form.Control
-					type='password'
-					placeholder='Senha'
-					value={password}
-					onChange={handleInputFormChange}
-				/>
-			</FloatingLabel>
 
 			<div className='flex-row-center flex-wrap'>
 				<div>

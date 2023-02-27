@@ -1,25 +1,32 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
-import ReactSelect, {type GroupBase, type SingleValue} from 'react-select';
-import UserContext, {type InterUser} from '../../../context/User/UserContext';
+import ReactSelect, {type MultiValue, type SingleValue} from 'react-select';
+import ExerciseContext, {type InterExercise} from '../../../../context/Exercise/ExerciseContext';
 
-const CreateCustomer: FC = () => {
-	const {createUser, roleOptions} = useContext(UserContext)!;
+const EditCustomer: FC = () => {
 	const navigate = useNavigate();
-	const [formInfos, setFormInfos] = useState<InterUser>({
-		name: '',
-		email: '',
-		role: 'user',
-		password: '',
+	const {
+		selectedExercise: {
+			_id,
+			name: selectedName,
+			link: selectedLink,
+			muscle: selectedMuscles,
+		},
+		muscleOptions,
+		editExercise,
+	} = useContext(ExerciseContext)!;
+	const [formInfos, setFormInfos] = useState<InterExercise>({
+		name: selectedName,
+		link: selectedLink,
+		muscle: selectedMuscles,
 	});
-	const [selectRole, setSelectRole] = useState<SingleValue<{
-		value: string | undefined;
-		label: string;
-	}> | null>(null);
+	const {name, link, muscle} = formInfos;
 
-	const {name, email, password, role} = formInfos;
+	const [selectMuscles, setSelectMuscles] = useState<Array<{
+		value: string;
+		label: string;
+	}> | undefined>(muscle.map(item => ({value: item, label: item})));
 
 	const handleInputFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const {id, value} = e.target;
@@ -27,28 +34,34 @@ const CreateCustomer: FC = () => {
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		if (!_id) {
+			return;
+		}
+
 		e.preventDefault();
+		const status = await editExercise(_id, formInfos);
 
-		const status = await createUser(formInfos);
-
-		if (status !== 201) {
+		if (status !== 204) {
 			throw new Error('Algo deu errado');
 		}
 
 		navigate(-1);
 	};
 
-	const handleSelectRole = (target: SingleValue<{
-		value: string | undefined;
+	const handleSelectRole = (target: MultiValue<{
+		value: string;
 		label: string;
-	}>) => {
-		setSelectRole(target);
+	}> | undefined) => {
+		setSelectMuscles(target as Array<{
+			value: string;
+			label: string;
+		}>);
 
 		if (!target) {
 			return;
 		}
 
-		setFormInfos(prevState => ({...prevState, role: target.value as 'admin' | 'user'}));
+		setFormInfos(prevState => ({...prevState, muscle: target.map(({label}) => label)}));
 	};
 
 	return (
@@ -69,60 +82,47 @@ const CreateCustomer: FC = () => {
 			</FloatingLabel>
 
 			<FloatingLabel
-				controlId='email'
-				label='Email'
+				controlId='link'
+				label='Link'
 				className='login-input'
 			>
 				<Form.Control
-					type='email'
+					type='link'
 					placeholder='name@example.com'
-					value={email}
+					value={link}
 					onChange={handleInputFormChange}
 				/>
 			</FloatingLabel>
 
 			<ReactSelect
 				className='login-input'
-				options={roleOptions}
-				value={selectRole}
+				options={muscleOptions}
+				value={selectMuscles}
 				onChange={handleSelectRole}
 				isClearable
-				placeholder='Selecione um cargo...'
-				isSearchable={false}
+				isMulti
+				placeholder='Selecione os músculos...'
 				styles={{
 					indicatorsContainer: base => ({...base, padding: '10px 0'}),
 				}}
 			/>
 
-			<FloatingLabel
-				controlId='password'
-				label='Senha'
-				className='login-input'
-			>
-				<Form.Control
-					type='password'
-					placeholder='Senha'
-					value={password}
-					onChange={handleInputFormChange}
-				/>
-			</FloatingLabel>
-
 			<div className='flex-row-center flex-wrap'>
-				<div className='small-button'>
+				<div>
 					<Button
 						variant='success'
 						type='submit'
-						style={{width: '100%'}}
+						className='small-button'
 					>
-            Criar
+            Editar
 					</Button>
 				</div>
 
-				<div className='small-button'>
+				<div>
 					<Button
 						variant='secondary'
 						type='button'
-						style={{width: '100%'}}
+						className='small-button'
 						onClick={() => {
 							navigate(-1);
 						}}
@@ -135,4 +135,4 @@ const CreateCustomer: FC = () => {
 	);
 };
 
-export default CreateCustomer;
+export default EditCustomer;

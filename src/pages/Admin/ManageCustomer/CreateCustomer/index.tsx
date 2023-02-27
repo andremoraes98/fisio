@@ -1,33 +1,25 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
-import ReactSelect, {type SingleValue} from 'react-select';
-import UserContext, {type InterUser} from '../../../context/User/UserContext';
+import ReactSelect, {type GroupBase, type SingleValue} from 'react-select';
+import UserContext, {type InterUser} from '../../../../context/User/UserContext';
 
-const EditCustomer: FC = () => {
+const CreateCustomer: FC = () => {
+	const {createUser, roleOptions} = useContext(UserContext)!;
 	const navigate = useNavigate();
-	const {
-		selectedUser: {
-			_id,
-			name: selectedName,
-			email: selectedEmail,
-			role: selectedRole,
-		},
-		editUser,
-		roleOptions,
-	} = useContext(UserContext)!;
 	const [formInfos, setFormInfos] = useState<InterUser>({
-		name: selectedName,
-		email: selectedEmail,
-		role: selectedRole,
+		name: '',
+		email: '',
+		role: 'user',
 		password: '',
 	});
 	const [selectRole, setSelectRole] = useState<SingleValue<{
 		value: string | undefined;
 		label: string;
-	}> | undefined>(roleOptions.find(({value}) => value === selectedRole));
+	}> | null>(null);
 
-	const {name, email, role, password} = formInfos;
+	const {name, email, password, role} = formInfos;
 
 	const handleInputFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const {id, value} = e.target;
@@ -35,14 +27,11 @@ const EditCustomer: FC = () => {
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		if (!_id) {
-			return;
-		}
-
 		e.preventDefault();
-		const status = await editUser(_id, formInfos);
 
-		if (status !== 204) {
+		const status = await createUser(formInfos);
+
+		if (status !== 201) {
 			throw new Error('Algo deu errado');
 		}
 
@@ -97,6 +86,7 @@ const EditCustomer: FC = () => {
 				options={roleOptions}
 				value={selectRole}
 				onChange={handleSelectRole}
+				isClearable
 				placeholder='Selecione um cargo...'
 				isSearchable={false}
 				styles={{
@@ -118,21 +108,21 @@ const EditCustomer: FC = () => {
 			</FloatingLabel>
 
 			<div className='flex-row-center flex-wrap'>
-				<div>
+				<div className='small-button'>
 					<Button
 						variant='success'
 						type='submit'
-						className='small-button'
+						style={{width: '100%'}}
 					>
-            Editar
+            Criar
 					</Button>
 				</div>
 
-				<div>
+				<div className='small-button'>
 					<Button
 						variant='secondary'
 						type='button'
-						className='small-button'
+						style={{width: '100%'}}
 						onClick={() => {
 							navigate(-1);
 						}}
@@ -145,4 +135,4 @@ const EditCustomer: FC = () => {
 	);
 };
 
-export default EditCustomer;
+export default CreateCustomer;

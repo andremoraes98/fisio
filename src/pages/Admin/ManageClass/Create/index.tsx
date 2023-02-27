@@ -2,24 +2,18 @@ import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type MultiValue, type SingleValue} from 'react-select';
-import ExerciseContext, {type InterExercise} from '../../../context/Exercise/ExerciseContext';
+import ExerciseContext, {type InterExercise} from '../../../../context/Exercise/ExerciseContext';
 
 const EditCustomer: FC = () => {
 	const navigate = useNavigate();
 	const {
-		selectedExercise: {
-			_id,
-			name: selectedName,
-			link: selectedLink,
-			muscle: selectedMuscles,
-		},
 		muscleOptions,
-		editExercise,
+		createExercise,
 	} = useContext(ExerciseContext)!;
 	const [formInfos, setFormInfos] = useState<InterExercise>({
-		name: selectedName,
-		link: selectedLink,
-		muscle: selectedMuscles,
+		name: '',
+		link: '',
+		muscle: [],
 	});
 	const {name, link, muscle} = formInfos;
 
@@ -34,14 +28,11 @@ const EditCustomer: FC = () => {
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		if (!_id) {
-			return;
-		}
-
 		e.preventDefault();
-		const status = await editExercise(_id, formInfos);
 
-		if (status !== 204) {
+		const status = await createExercise(formInfos);
+
+		if (status !== 201) {
 			throw new Error('Algo deu errado');
 		}
 
@@ -61,7 +52,7 @@ const EditCustomer: FC = () => {
 			return;
 		}
 
-		setFormInfos(prevState => ({...prevState, muscle: target.map(({label}) => label)}));
+		setFormInfos(prevState => ({...prevState, muscle: target.map(({value}) => value)}));
 	};
 
 	return (
@@ -114,7 +105,7 @@ const EditCustomer: FC = () => {
 						type='submit'
 						className='small-button'
 					>
-            Editar
+            Criar
 					</Button>
 				</div>
 

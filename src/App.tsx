@@ -1,14 +1,14 @@
 import React from 'react';
 import {Routes, Route} from 'react-router-dom';
-import Calendar from './pages/Calendar';
-import Home from './pages/Home';
+import Calendar from './pages/Admin/Calendar';
+import Home from './pages/Admin/Home';
 import Login from './pages/Login';
-import ManageCustomer from './pages/ManageCustomer';
-import ManageClass from './pages/ManageClass';
-import CreateCustomer from './pages/ManageCustomer/CreateCustomer';
-import EditCustomer from './pages/ManageCustomer/EditCustomer';
-import EditClass from './pages/ManageClass/Edit';
-import CreateClass from './pages/ManageClass/Create';
+import ManageCustomer from './pages/Admin/ManageCustomer';
+import ManageClass from './pages/Admin/ManageClass';
+import CreateCustomer from './pages/Admin/ManageCustomer/CreateCustomer';
+import EditCustomer from './pages/Admin/ManageCustomer/EditCustomer';
+import EditClass from './pages/Admin/ManageClass/Edit';
+import CreateClass from './pages/Admin/ManageClass/Create';
 import Redirect from './pages/Redirect';
 
 function App() {

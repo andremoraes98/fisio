@@ -1,40 +1,41 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Form, Button} from 'react-bootstrap';
+import {MdAdd} from 'react-icons/md';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type SingleValue} from 'react-select';
-import ExerciseContext from '../../context/Exercise/ExerciseContext';
-import {MdAdd} from 'react-icons/md';
+import UserContext from '../../../context/User/UserContext';
 import './style.css';
 
 const SelectCustomer: FC = () => {
 	const {
-		exercises,
-		getAllExercise,
+		users,
+		getAllRegistered,
+		getUsers,
 		isLoading,
-		selectedExercise: {_id},
-		setSelectedExercise,
-		deleteExercise,
-	} = useContext(ExerciseContext)!;
+		setSelectedUser,
+		deleteUser,
+		selectedUser: {_id, role},
+	} = useContext(UserContext)!;
 	const navigate = useNavigate();
 
 	const [selectValue, setSelectValue] = useState<SingleValue<{
 		value: string | undefined;
 		label: string;
 	}> | null>(null);
+	const [onlyUser, setOnlyUser] = useState<boolean>(true);
 
 	useEffect(() => {
-		getAllExercise();
+		getUsers();
 	}, []);
 
-	const handleSelectExercise = (target: SingleValue<{
+	const handleSelectCutomer = (target: SingleValue<{
 		value: string | undefined;
 		label: string;
 	}>) => {
-		const selectedUser = exercises.find(({_id}) => _id === target?.value);
-
+		const selectedUser = users.find(({_id}) => _id === target?.value);
 		if (selectedUser) {
-			setSelectedExercise(selectedUser);
+			setSelectedUser(selectedUser);
 		}
 
 		setSelectValue(target);
@@ -45,13 +46,26 @@ const SelectCustomer: FC = () => {
 			return;
 		}
 
-		const status = await deleteExercise(_id);
+		const status = await deleteUser(_id);
 
 		if (status !== 204) {
 			throw new Error('Algo deu errado');
 		}
 
 		window.location.reload();
+	};
+
+	const handleOnlyUserInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const fetchOnlyUser = e.target.checked;
+
+		if (fetchOnlyUser) {
+			getUsers();
+		} else {
+			getAllRegistered();
+		}
+
+		setOnlyUser(prevState => !prevState);
+		handleSelectCutomer(null);
 	};
 
 	return (
@@ -65,11 +79,11 @@ const SelectCustomer: FC = () => {
 				<ReactSelect
 					isDisabled={isLoading}
 					className='rselect-input'
-					options={exercises.map(({name, _id}) => ({label: name, value: _id}))}
+					options={users.map(user => ({label: user.name, value: user._id}))}
 					value={selectValue}
-					onChange={handleSelectExercise}
+					onChange={handleSelectCutomer}
 					isClearable
-					placeholder='Selecione um exercício...'
+					placeholder='Selecione um aluno...'
 				/>
 
 				<div className='icon-button'>
@@ -78,7 +92,7 @@ const SelectCustomer: FC = () => {
 						variant='success'
 						className='flex-row-center'
 						onClick={() => {
-							navigate('/create-class');
+							navigate('/create-user');
 						}}
 					>
 						<MdAdd size={20}/>
@@ -86,11 +100,38 @@ const SelectCustomer: FC = () => {
 				</div>
 			</div>
 
-			<div className='flex-center-evenly flex-wrap'>
+			<label className='flex-row-center' htmlFor='user-only'>
+				<input
+					value='user-only'
+					checked={onlyUser}
+					onChange={handleOnlyUserInputChange}
+					id='user-only'
+					type='checkbox'
+					style={{
+						marginRight: '10px',
+					}}
+				/>
+				Alunos apenas
+			</label>
+
+			<div className='flex-row-center flex-wrap'>
+				{ role === 'user' && (
+					<div className='large-button'>
+						<Button
+							onClick={() => {
+								navigate('/calendar');
+							}}
+							variant='success'
+							disabled={!selectValue}
+						>
+							Calcular pagamento
+						</Button>
+					</div>
+				)}
 				<div className='large-button'>
 					<Button
 						onClick={() => {
-							navigate('/edit-class');
+							navigate('/edit-customer');
 						}}
 						disabled={!selectValue}
 					>

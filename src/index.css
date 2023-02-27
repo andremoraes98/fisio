@@ -55,3 +55,21 @@ code {
   justify-content: center;
   align-items: flex-start;
 }
+
+.icon-button {
+  height: 38px;
+  width: 38px;
+}
+
+.icon-button button {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rselect-input {
+  margin: 10px 20px;
+  max-width: 300px;
+  min-width: 250px;
+}

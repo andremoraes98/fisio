@@ -3,7 +3,7 @@ import React, {useContext, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type GroupBase, type SingleValue} from 'react-select';
-import UserContext, {type InterUser} from '../../../context/UserContext';
+import UserContext, {type InterUser} from '../../../../context/User/UserContext';
 
 const CreateCustomer: FC = () => {
 	const {createUser, roleOptions} = useContext(UserContext)!;
@@ -22,11 +22,6 @@ const CreateCustomer: FC = () => {
 	const {name, email, password, role} = formInfos;
 
 	const handleInputFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const {id, value} = e.target;
-		setFormInfos(prevState => ({...prevState, [id]: value}));
-	};
-
-	const handleSelectFormChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const {id, value} = e.target;
 		setFormInfos(prevState => ({...prevState, [id]: value}));
 	};

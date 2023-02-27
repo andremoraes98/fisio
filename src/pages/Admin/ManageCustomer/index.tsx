@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Form, Button} from 'react-bootstrap';
+import {MdAdd} from 'react-icons/md';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type SingleValue} from 'react-select';
-import UserContext from '../../../context/UserContext';
+import UserContext from '../../../context/User/UserContext';
 import './style.css';
 
 const SelectCustomer: FC = () => {
@@ -22,10 +23,10 @@ const SelectCustomer: FC = () => {
 		value: string | undefined;
 		label: string;
 	}> | null>(null);
-	const [onlyUser, setOnlyUser] = useState<boolean>(false);
+	const [onlyUser, setOnlyUser] = useState<boolean>(true);
 
 	useEffect(() => {
-		getAllRegistered();
+		getUsers();
 	}, []);
 
 	const handleSelectCutomer = (target: SingleValue<{
@@ -74,15 +75,30 @@ const SelectCustomer: FC = () => {
 				navigate('/calendar');
 			}}
 		>
-			<ReactSelect
-				isDisabled={isLoading}
-				className='login-input'
-				options={users.map(user => ({label: user.name, value: user._id}))}
-				value={selectValue}
-				onChange={handleSelectCutomer}
-				isClearable
-				placeholder='Selecione um aluno...'
-			/>
+			<div className='flex-row-center flex-wrap'>
+				<ReactSelect
+					isDisabled={isLoading}
+					className='rselect-input'
+					options={users.map(user => ({label: user.name, value: user._id}))}
+					value={selectValue}
+					onChange={handleSelectCutomer}
+					isClearable
+					placeholder='Selecione um aluno...'
+				/>
+
+				<div className='icon-button'>
+					<Button
+						type='button'
+						variant='success'
+						className='flex-row-center'
+						onClick={() => {
+							navigate('/create-user');
+						}}
+					>
+						<MdAdd size={20}/>
+					</Button>
+				</div>
+			</div>
 
 			<label className='flex-row-center' htmlFor='user-only'>
 				<input
@@ -98,7 +114,7 @@ const SelectCustomer: FC = () => {
 				Alunos apenas
 			</label>
 
-			<div className='flex-center-evenly flex-wrap'>
+			<div className='flex-row-center flex-wrap'>
 				{ role === 'user' && (
 					<div className='large-button'>
 						<Button

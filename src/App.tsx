@@ -10,12 +10,14 @@ import EditCustomer from './pages/Admin/ManageCustomer/EditCustomer';
 import EditClass from './pages/Admin/ManageClass/Edit';
 import CreateClass from './pages/Admin/ManageClass/Create';
 import Redirect from './pages/Redirect';
+import MainUser from './pages/Users';
 
 function App() {
 	return (
 		<Routes>
 			<Route path='/login' element={<Login />}/>
-			<Route path='/home' element={<Home />}/>
+			<Route path='/admin' element={<Home />}/>
+			<Route path='/user' element={<MainUser />}/>
 			<Route path='/calendar' element={<Calendar />}/>
 			<Route path='/manage-customer' element={<ManageCustomer />}/>
 			<Route path='/edit-customer' element={<EditCustomer />}/>

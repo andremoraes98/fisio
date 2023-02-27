@@ -35,7 +35,7 @@ const Login: FC = () => {
 
 		const {token} = await response.json() as {token: string};
 		localStorage.setItem('token', token);
-		navigate('/home');
+		navigate('/admin');
 	};
 
 	return (

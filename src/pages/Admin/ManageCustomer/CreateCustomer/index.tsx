@@ -1,18 +1,19 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import React, {useContext, useState, type FC} from 'react';
+import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
-import ReactSelect, {type GroupBase, type SingleValue} from 'react-select';
+import ReactSelect, {type SingleValue} from 'react-select';
 import UserContext, {type InterUser} from '../../../../context/User/UserContext';
 
 const CreateCustomer: FC = () => {
-	const {createUser, roleOptions} = useContext(UserContext)!;
+	const {createUser, roleOptions, checkPermission} = useContext(UserContext)!;
 	const navigate = useNavigate();
 	const [formInfos, setFormInfos] = useState<InterUser>({
 		name: '',
 		email: '',
 		role: 'user',
 		password: '',
+		classes: [],
 	});
 	const [selectRole, setSelectRole] = useState<SingleValue<{
 		value: string | undefined;
@@ -50,6 +51,10 @@ const CreateCustomer: FC = () => {
 
 		setFormInfos(prevState => ({...prevState, role: target.value as 'admin' | 'user'}));
 	};
+
+	useEffect(() => {
+		checkPermission(navigate, 'admin');
+	}, []);
 
 	return (
 		<Form

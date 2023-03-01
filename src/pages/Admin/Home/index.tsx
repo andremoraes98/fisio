@@ -1,15 +1,21 @@
-import React, {type FC} from 'react';
+import React, {useContext, useEffect, type FC} from 'react';
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
+import UserContext from '../../../context/User/UserContext';
 import './Home.css';
 
 const Home: FC = () => {
+	const {checkPermission} = useContext(UserContext)!;
 	const navigate = useNavigate();
 
 	const execLogoffActions = () => {
 		localStorage.removeItem('token');
 		navigate('/login');
 	};
+
+	useEffect(() => {
+		checkPermission(navigate, 'admin');
+	}, []);
 
 	return (
 		<section className='main-container flex-column-center'>

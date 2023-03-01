@@ -3,8 +3,9 @@ import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Form, Button} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type SingleValue} from 'react-select';
-import ExerciseContext from '../../../context/Exercise/ExerciseContext';
 import {MdAdd} from 'react-icons/md';
+import ExerciseContext from '../../../context/Exercise/ExerciseContext';
+import UserContext from '../../../context/User/UserContext';
 import './style.css';
 
 const SelectCustomer: FC = () => {
@@ -16,6 +17,8 @@ const SelectCustomer: FC = () => {
 		setSelectedExercise,
 		deleteExercise,
 	} = useContext(ExerciseContext)!;
+	const {checkPermission} = useContext(UserContext)!;
+
 	const navigate = useNavigate();
 
 	const [selectValue, setSelectValue] = useState<SingleValue<{
@@ -25,6 +28,7 @@ const SelectCustomer: FC = () => {
 
 	useEffect(() => {
 		getAllExercise();
+		checkPermission(navigate, 'admin');
 	}, []);
 
 	const handleSelectExercise = (target: SingleValue<{

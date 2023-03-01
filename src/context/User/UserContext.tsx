@@ -1,4 +1,5 @@
 import {createContext, type Dispatch, type SetStateAction} from 'react';
+import {type NavigateFunction} from 'react-router-dom';
 
 export type InterCredentials = {
 	email: string;
@@ -11,6 +12,7 @@ export type InterUser = {
 	email: string;
 	role: 'user' | 'admin';
 	password?: string;
+	classes: string[];
 };
 
 export type InterContext = {
@@ -22,10 +24,13 @@ export type InterContext = {
 	createUser: (userInfo: InterUser) => Promise<number | undefined>;
 	editUser: (id: string, userInfo: InterUser) => Promise<number | undefined>;
 	deleteUser: (id: string) => Promise<number | undefined>;
-	checkLoginCredentials: (credentials: InterCredentials) => Promise<Response | undefined>;
+	login: (credentials: InterCredentials) => Promise<Response | undefined>;
 	selectedUser: InterUser;
 	setSelectedUser: (userInfo: InterUser) => void;
 	roleOptions: Array<{value: string; label: string}>;
+	autenticatedUser: InterUser | undefined;
+	setAutenticatedUser: (userInfo: InterUser | undefined) => void;
+	checkPermission: (navigate: NavigateFunction, role: string) => void;
 };
 
 const UserContext = createContext<InterContext | undefined>(undefined);

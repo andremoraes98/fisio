@@ -120,7 +120,20 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 	};
 
 	const checkPermission = (navigate: NavigateFunction, role: string) => {
-		if (autenticatedUser?.role !== role) {
+		const user = localStorage.getItem('user');
+
+		if (!user) {
+			setAutenticatedUser(undefined);
+			navigate('/login');
+			return;
+		}
+
+		const {role: userRole} = JSON.parse(user) as InterUser;
+		if (role === userRole) {
+			return;
+		}
+
+		if (!autenticatedUser || autenticatedUser.role !== role) {
 			setAutenticatedUser(undefined);
 			navigate('/login');
 		}

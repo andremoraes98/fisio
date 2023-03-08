@@ -35,6 +35,7 @@ const Login: FC = () => {
 
 		const user = await response.json() as InterUser;
 		setAutenticatedUser(user);
+		localStorage.setItem('user', JSON.stringify(user));
 
 		if (user.role === 'admin') {
 			navigate('/admin');

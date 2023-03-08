@@ -32,7 +32,7 @@ const MainUser: FC = () => {
 				<div className='large-button'>
 					<Button
 						onClick={() => {
-							navigate('/manage-class');
+							navigate('/training');
 						}}
 					>
 						Treinar

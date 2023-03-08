@@ -11,6 +11,7 @@ import EditClass from './pages/Admin/ManageClass/Edit';
 import CreateClass from './pages/Admin/ManageClass/Create';
 import Redirect from './pages/Redirect';
 import MainUser from './pages/Users';
+import Training from './pages/Users/Training';
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 			<Route path='/login' element={<Login />}/>
 			<Route path='/admin' element={<Home />}/>
 			<Route path='/user' element={<MainUser />}/>
+			<Route path='/training' element={<Training />}/>
 			<Route path='/calendar' element={<Calendar />}/>
 			<Route path='/manage-customer' element={<ManageCustomer />}/>
 			<Route path='/edit-customer' element={<EditCustomer />}/>

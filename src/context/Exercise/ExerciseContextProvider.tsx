@@ -14,6 +14,17 @@ const ExerciseProvider: FC<PropsWithChildren> = ({children}) => {
 		muscle: [],
 	});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const trainingTypes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'U', 'M'];
+	const eccentricSpeedOptions = [
+		{label: 'Excêntrico Lento', value: 'slow'},
+		{label: 'Excêntrico Normal', value: 'normal'},
+		{label: 'Excêntrico Rápido', value: 'fast'},
+	];
+	const concentricSpeedOptions = [
+		{label: 'Concêntrico Lento', value: 'slow'},
+		{label: 'Concêntrico Normal', value: 'normal'},
+		{label: 'Concêntrico Rápido', value: 'fast'},
+	];
 
 	const muscleOptions: Array<{value: string; label: string}> = [
 		{label: 'Costas', value: 'costas'},
@@ -102,6 +113,9 @@ const ExerciseProvider: FC<PropsWithChildren> = ({children}) => {
 		selectedExercise,
 		setSelectedExercise,
 		muscleOptions,
+		trainingTypes,
+		eccentricSpeedOptions,
+		concentricSpeedOptions,
 	};
 
 	return (

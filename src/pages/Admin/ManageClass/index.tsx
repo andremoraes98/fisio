@@ -35,10 +35,10 @@ const SelectCustomer: FC = () => {
 		value: string | undefined;
 		label: string;
 	}>) => {
-		const selectedUser = exercises.find(({_id}) => _id === target?.value);
+		const selectedExercise = exercises.find(({_id}) => _id === target?.value);
 
-		if (selectedUser) {
-			setSelectedExercise(selectedUser);
+		if (selectedExercise) {
+			setSelectedExercise(selectedExercise);
 		}
 
 		setSelectValue(target);

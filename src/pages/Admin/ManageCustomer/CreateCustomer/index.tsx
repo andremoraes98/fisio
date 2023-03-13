@@ -2,36 +2,35 @@
 import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Button, Form, ToggleButton} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
-import {type SingleValue} from 'react-select';
+import ReactSelect, {type MultiValue, type SingleValue} from 'react-select';
 import BootStrapInput from '../../../../components/BootStrapInput';
 import Select from '../../../../components/ReactSelect';
 import ExerciseContext from '../../../../context/Exercise/ExerciseContext';
 import UserContext, {type InterUser} from '../../../../context/User/UserContext';
+import './style.css';
 
 const CreateCustomer: FC = () => {
-	const {createUser, roleOptions, checkPermission, isLoading} = useContext(UserContext)!;
-	const {exercises, getAllExercise, trainingTypes, eccentricSpeedOptions, concentricSpeedOptions} = useContext(ExerciseContext)!;
+	const {createUser, roleOptions, checkPermission} = useContext(UserContext)!;
+	const {exercises, getAllExercise, trainingTypes, eccentricSpeedOptions, concentricSpeedOptions, isometricOptions} = useContext(ExerciseContext)!;
 	const navigate = useNavigate();
 	const [formInfos, setFormInfos] = useState<InterUser>({
 		name: '',
 		email: '',
 		role: 'user',
 		password: '',
-		classes: [],
+		classes: {},
 	});
 	const [training, setTraining] = useState<string>('A');
 	const [createdTrainings, setCreatedTrainings] = useState<{
 		series: string;
 		repetitions: string;
 		interval: string;
-		speed: string;
 	}>({
 		series: '',
 		repetitions: '',
 		interval: '',
-		speed: '',
 	});
-	const {series, repetitions, interval, speed} = createdTrainings;
+	const {series, repetitions, interval} = createdTrainings;
 
 	const [selectRole, setSelectRole] = useState<SingleValue<{
 		value: string | undefined;
@@ -53,7 +52,12 @@ const CreateCustomer: FC = () => {
 		label: string;
 	}> | null>(null);
 
-	const {name, email, password} = formInfos;
+	const [isometric, setIsometric] = useState<MultiValue<{
+		label: string;
+		value: string | undefined;
+	}> | null>(null);
+
+	const {name, email, password, classes} = formInfos;
 
 	const handlePersonalInfoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const {id, value} = e.target;
@@ -81,6 +85,48 @@ const CreateCustomer: FC = () => {
 		navigate(-1);
 	};
 
+	const clearExerciseInputs = () => {
+		setSelectExercise(null);
+		setCreatedTrainings({
+			series: '',
+			repetitions: '',
+			interval: '',
+		});
+		setConcentricSpeed(null);
+		setEccentricSpeed(null);
+		setIsometric(null);
+	};
+
+	const handleExerciseAdd = () => {
+		if (!selectExercise || !concentricSpeed || !eccentricSpeed || !isometric) {
+			return;
+		}
+
+		if (classes[training]) {
+			classes[training].push({
+				exercise: selectExercise.value!,
+				series,
+				repetitions,
+				interval,
+				concentricSpeed: concentricSpeed.value!,
+				eccentricSpeed: eccentricSpeed.value!,
+				isometric: isometric.map(type => type.value!),
+			});
+		} else {
+			classes[training] = [{
+				exercise: selectExercise.value!,
+				series,
+				repetitions,
+				interval,
+				concentricSpeed: concentricSpeed.value!,
+				eccentricSpeed: eccentricSpeed.value!,
+				isometric: isometric.map(type => type.value!),
+			}];
+		}
+
+		clearExerciseInputs();
+	};
+
 	useEffect(() => {
 		checkPermission(navigate, 'admin');
 		getAllExercise();
@@ -89,10 +135,12 @@ const CreateCustomer: FC = () => {
 	return (
 		<Form
 			onSubmit={handleSubmit}
-			className='flex-column-center '
+			className='flex-column-center'
 		>
-			<main className='flex-row-center'>
-				<section style={{paddingRight: '20px'}}>
+			<h1 className='my-4'>Criar um usuário</h1>
+
+			<main id='create-customer-main'>
+				<section>
 					<BootStrapInput
 						id='name'
 						type='text'
@@ -114,7 +162,6 @@ const CreateCustomer: FC = () => {
 						placeholder='Selecione um cargo...'
 						setValue={setSelectRole}
 						value={selectRole}
-						isClearable={false}
 					/>
 
 					<BootStrapInput
@@ -126,12 +173,11 @@ const CreateCustomer: FC = () => {
 					/>
 				</section>
 
-				<section style={{paddingLeft: '20px', borderLeft: '1px solid gray'}}>
-					<div className='flex-row-center'>
+				<section>
+					<div className='training-buttons'>
 						{trainingTypes.map(trainingName => (
 							<ToggleButton
 								key={trainingName}
-								className='m-2'
 								id={`toggle-check-${trainingName}`}
 								type='radio'
 								name='training-type'
@@ -164,7 +210,7 @@ const CreateCustomer: FC = () => {
 
 					<BootStrapInput
 						id='repetitions'
-						type='number'
+						type='text'
 						placeholder='Repetições'
 						value={repetitions}
 						changeStateFunc={handleTrainingInfoChange}
@@ -194,11 +240,27 @@ const CreateCustomer: FC = () => {
 						isClearable
 					/>
 
-					<div>
+					<ReactSelect
+						options={isometricOptions}
+						placeholder='Isometria'
+						className='login-input'
+						onChange={target => {
+							setIsometric(target);
+						}}
+						value={isometric}
+						isClearable
+						isMulti
+						styles={{
+							indicatorsContainer: base => ({...base, padding: '10px 0'}),
+						}}
+					/>
+
+					<div className='text-center'>
 						<Button
 							variant='primary'
 							type='submit'
 							className='large-button'
+							onClick={handleExerciseAdd}
 						>
 							{`Adicionar ao treino ${training}`}
 						</Button>

@@ -1,0 +1,42 @@
+#create-customer-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#create-customer-main section {
+  padding: 0 10px;
+  width: 50%;
+  min-width: 350px;
+}
+
+#create-customer-main section:last-child {
+  border-left: 1px solid gray;
+}
+
+.training-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-inline: auto;
+  width: 300px;
+}
+
+.training-buttons label {
+  width: 38px;
+  margin: 0.5rem;
+}
+
+@media (width < 700px) {
+
+  #create-customer-main section:last-child {
+    border-left: none;
+    border-top: 1px solid gray;
+  }
+
+  #create-customer-main section {
+    padding: 20px 0;
+  }
+}

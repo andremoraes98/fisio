@@ -6,13 +6,23 @@ export type InterCredentials = {
 	password: string;
 };
 
+export type InterExerciseDetails = {
+	exercise: string;
+	series: string;
+	repetitions: string;
+	interval: string;
+	concentricSpeed: string;
+	eccentricSpeed: string;
+	isometric: string[];
+};
+
 export type InterUser = {
 	_id?: string;
 	name: string;
 	email: string;
 	role: 'user' | 'admin';
 	password?: string;
-	classes: string[];
+	classes: Record<string, InterExerciseDetails[]>;
 };
 
 export type InterContext = {

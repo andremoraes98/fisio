@@ -21,6 +21,7 @@ export type InterExerciseContext = {
 	trainingTypes: string[];
 	eccentricSpeedOptions: Array<{value: string; label: string}>;
 	concentricSpeedOptions: Array<{value: string; label: string}>;
+	isometricOptions: Array<{value: string; label: string}>;
 };
 
 const ExerciseContext = createContext<InterExerciseContext | undefined>(undefined);

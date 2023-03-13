@@ -14,7 +14,7 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		name: '',
 		_id: '',
 		role: 'user',
-		classes: [],
+		classes: {},
 	});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 

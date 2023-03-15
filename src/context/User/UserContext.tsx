@@ -1,5 +1,6 @@
 import {createContext, type Dispatch, type SetStateAction} from 'react';
 import {type NavigateFunction} from 'react-router-dom';
+import {type InterExercise} from '../Exercise/ExerciseContext';
 
 export type InterCredentials = {
 	email: string;
@@ -7,7 +8,7 @@ export type InterCredentials = {
 };
 
 export type InterExerciseDetails = {
-	exercise: string;
+	exercise: InterExercise;
 	series: string;
 	repetitions: string;
 	interval: string;

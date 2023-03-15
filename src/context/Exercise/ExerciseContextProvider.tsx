@@ -122,6 +122,8 @@ const ExerciseProvider: FC<PropsWithChildren> = ({children}) => {
 		}
 	};
 
+	const filterExerciseById = (id: string): InterExercise => exercises.find(exercise => exercise._id === id)!;
+
 	const context = {
 		isLoading,
 		setIsLoading,
@@ -137,6 +139,7 @@ const ExerciseProvider: FC<PropsWithChildren> = ({children}) => {
 		eccentricSpeedOptions,
 		concentricSpeedOptions,
 		isometricOptions,
+		filterExerciseById,
 	};
 
 	return (

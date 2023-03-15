@@ -73,7 +73,7 @@ const ExerciseProvider: FC<PropsWithChildren> = ({children}) => {
 
 	const createExercise = async (userInfo: InterExercise) => {
 		setIsLoading(true);
-		console.log(userInfo);
+
 		try {
 			const response = await fetch(`${MAIN_URL}/exercise`, {
 				method: 'PUT',

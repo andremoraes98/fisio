@@ -22,7 +22,7 @@ const Select: FC<ReactSelectProps> = ({options, setValue, value, placeholder, is
 
 	return (
 		<RSelect
-			className='login-input'
+			className='input-forms'
 			isDisabled={isLoading}
 			options={options}
 			value={value}

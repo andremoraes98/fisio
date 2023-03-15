@@ -23,7 +23,7 @@ export type InterUser = {
 	email: string;
 	role: 'user' | 'admin';
 	password?: string;
-	classes: Record<string, InterExerciseDetails[]>;
+	classes: Map<string, InterExerciseDetails[]>;
 };
 
 export type InterContext = {

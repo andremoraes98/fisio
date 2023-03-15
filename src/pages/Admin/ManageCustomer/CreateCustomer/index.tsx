@@ -9,6 +9,7 @@ import Select from '../../../../components/ReactSelect';
 import ExerciseContext from '../../../../context/Exercise/ExerciseContext';
 import UserContext, {type InterUser} from '../../../../context/User/UserContext';
 import './style.css';
+import ResumeTraining from './ResumeTraining';
 
 const CreateCustomer: FC = () => {
 	const {createUser, roleOptions, checkPermission} = useContext(UserContext)!;
@@ -27,7 +28,7 @@ const CreateCustomer: FC = () => {
 		email: '',
 		role: 'user',
 		password: '',
-		classes: {},
+		classes: new Map(),
 	});
 	const [training, setTraining] = useState<string>('A');
 	const [createdTrainings, setCreatedTrainings] = useState<{
@@ -101,8 +102,8 @@ const CreateCustomer: FC = () => {
 
 		const exercise = filterExerciseById(selectExercise.value!);
 
-		if (classes[training]) {
-			classes[training].push({
+		if (classes.has(training)) {
+			classes.set(training, [...classes.get(training)!, {
 				exercise,
 				series,
 				repetitions,
@@ -110,9 +111,9 @@ const CreateCustomer: FC = () => {
 				concentricSpeed: concentricSpeed.value!,
 				eccentricSpeed: eccentricSpeed.value!,
 				isometric: isometric.map(type => type.value!),
-			});
+			}]);
 		} else {
-			classes[training] = [{
+			classes.set(training, [{
 				exercise,
 				series,
 				repetitions,
@@ -120,7 +121,7 @@ const CreateCustomer: FC = () => {
 				concentricSpeed: concentricSpeed.value!,
 				eccentricSpeed: eccentricSpeed.value!,
 				isometric: isometric.map(type => type.value!),
-			}];
+			}]);
 		}
 
 		setSelectExercise(null);
@@ -170,29 +171,34 @@ const CreateCustomer: FC = () => {
 						value={password}
 						changeStateFunc={handlePersonalInfoChange}
 					/>
+
 				</section>
 
-				<section>
-					<div>
-						<div className='training-buttons'>
-							{trainingTypes.map(trainingName => (
-								<ToggleButton
-									key={trainingName}
-									id={`toggle-check-${trainingName}`}
-									type='radio'
-									name='training-type'
-									variant='outline-primary'
-									checked={trainingName === training}
-									value={trainingName}
-									onChange={e => {
-										setTraining(e.target.value);
-									}}
-								>
-									{trainingName}
-								</ToggleButton>
-							))}
-						</div>
+				<section className='flex-column-center'>
+					<div className='training-buttons flex-row-center'>
+						{trainingTypes.map(trainingName => (
+							<ToggleButton
+								key={trainingName}
+								id={`toggle-check-${trainingName}`}
+								type='radio'
+								name='training-type'
+								variant='outline-primary'
+								checked={trainingName === training}
+								value={trainingName}
+								onChange={e => {
+									setTraining(e.target.value);
+								}}
+							>
+								{trainingName}
+							</ToggleButton>
+						))}
+					</div>
 
+					<ResumeTraining
+						classes={classes}
+					/>
+
+					<div style={{width: '100%'}}>
 						<Select
 							options={exercises.map(({name, _id}) => ({label: name, value: _id}))}
 							placeholder='Selecione um exercício...'
@@ -243,7 +249,7 @@ const CreateCustomer: FC = () => {
 						<ReactSelect
 							options={isometricOptions}
 							placeholder='Isometria'
-							className='login-input'
+							className='input-forms'
 							onChange={target => {
 								setIsometric(target);
 							}}
@@ -265,35 +271,6 @@ const CreateCustomer: FC = () => {
 								{`Adicionar ao treino ${training}`}
 							</Button>
 						</div>
-					</div>
-
-					<div>
-						{
-							trainingTypes.map(trainingName => {
-								console.log(classes[trainingName]);
-								return classes[trainingName] && (<DropdownButton
-									as={ButtonGroup}
-									id={`dropdown-button-drop-${trainingName}`}
-									size='sm'
-									variant='secondary'
-									title={`Treino ${trainingName}`}
-									className='p-3'
-								>
-									{
-										classes[trainingName].map(exercise => <p key={`dropdown-button-drop-${exercise.exercise.name}`}>{exercise.exercise.name}</p>)
-									}
-									<div className='flex-row-center'>
-										<Button
-											variant='outline-danger'
-											type='button'
-											style={{width: '38px', height: '38px', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0}}
-										>
-											<RiDeleteBinFill />
-										</Button>
-									</div>
-								</DropdownButton>);
-							})
-						}
 					</div>
 				</section>
 			</main>

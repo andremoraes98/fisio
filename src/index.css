@@ -24,6 +24,12 @@ code {
   align-items: center;
 }
 
+.flex-row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .flex-center-evenly {
   display: flex;
   justify-content: space-evenly;
@@ -59,9 +65,12 @@ code {
 .icon-button {
   height: 38px;
   width: 38px;
+  margin-inline: auto;
 }
 
 .icon-button button {
+  height: 100%;
+  width: 100%;
   padding: 0;
   display: flex;
   justify-content: center;

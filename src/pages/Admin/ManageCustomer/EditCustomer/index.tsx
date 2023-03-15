@@ -22,7 +22,7 @@ const EditCustomer: FC = () => {
 		email: selectedEmail,
 		role: selectedRole,
 		password: '',
-		classes: {},
+		classes: new Map(),
 	});
 	const [selectRole, setSelectRole] = useState<SingleValue<{
 		value: string | undefined;

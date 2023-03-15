@@ -1,6 +1,7 @@
 
-import React, {type Dispatch, type SetStateAction, type FC} from 'react';
+import React, {type FC} from 'react';
 import {FloatingLabel, Form} from 'react-bootstrap';
+import './style.css';
 
 type ReactSelectProps = {
 	id: string;
@@ -10,11 +11,12 @@ type ReactSelectProps = {
 	changeStateFunc: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const BootStrapInput: FC<ReactSelectProps> = ({id, value, placeholder, type, changeStateFunc}) => (
+const BootStrapInput: FC<ReactSelectProps> = ({id, value, placeholder, type, changeStateFunc, ...rest}) => (
 	<FloatingLabel
 		controlId={id}
 		label={placeholder}
-		className='login-input'
+		className='input-forms'
+		{...rest}
 	>
 		<Form.Control
 			type={type}

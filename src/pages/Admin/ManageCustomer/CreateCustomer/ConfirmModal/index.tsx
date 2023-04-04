@@ -24,7 +24,7 @@ const ConfirModal: FC<ConfirmModalProps> = ({show, setShow, deleteTraining}) => 
 			<Modal.Header closeButton>
 				<Modal.Title>Confirme sua decisão</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>Você deseja excluir o treino?</Modal.Body>
+			<Modal.Body>Você deseja excluir o exercício?</Modal.Body>
 			<Modal.Footer>
 				<Button variant='secondary' onClick={() => {
 					setShow(false);

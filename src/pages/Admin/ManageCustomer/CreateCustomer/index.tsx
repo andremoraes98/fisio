@@ -127,6 +127,15 @@ const CreateCustomer: FC = () => {
 		setSelectExercise(null);
 	};
 
+	const isPossibleAddExercise = Boolean(selectExercise)
+		&& Boolean(createdTrainings.interval)
+		&& Boolean(createdTrainings.repetitions)
+		&& Boolean(createdTrainings.series)
+		&& Boolean(concentricSpeed)
+		&& Boolean(eccentricSpeed)
+		&& Boolean(isometric);
+
+	console.log(isPossibleAddExercise);
 	useEffect(() => {
 		checkPermission(navigate, 'admin');
 		getAllExercise();
@@ -267,6 +276,7 @@ const CreateCustomer: FC = () => {
 								type='button'
 								className='large-button'
 								onClick={handleExerciseAdd}
+								disabled={!isPossibleAddExercise}
 							>
 								{`Adicionar ao treino ${training}`}
 							</Button>

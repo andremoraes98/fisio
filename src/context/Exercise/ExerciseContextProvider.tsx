@@ -3,7 +3,7 @@ import type {InterExercise} from './ExerciseContext';
 import ExerciseContext from './ExerciseContext';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const MAIN_URL = process.env.REACT_APP_MAIN_API ?? 'localhost:3001';
+const MAIN_URL = process.env.REACT_APP_MAIN_API ?? 'http://localhost:3001';
 
 const ExerciseProvider: FC<PropsWithChildren> = ({children}) => {
 	const [exercises, setExercises] = useState<InterExercise[]>([]);

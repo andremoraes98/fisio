@@ -10,16 +10,31 @@ type ResumeTrainingProps = {
 };
 
 const ResumeTraining: FC<ResumeTrainingProps> = ({classes}) => {
+	const initialStateDeleted = {
+		class: '',
+		id: '',
+	};
 	const {trainingTypes} = useContext(ExerciseContext)!;
 	const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
-	const [deletedTraining, setDeletedTraining] = useState<string>('');
+	const [deletedExercise, setDeletedExercise] = useState<{class: string; id: string}>(initialStateDeleted);
 
 	return (
 		<>
 			<ConfirModal
 				show={isConfirmModalOpen}
 				setShow={setIsConfirmModalOpen}
-				deleteTraining={() => classes.delete(deletedTraining)}
+				deleteTraining={() => {
+					const exerciseClass = classes.get(deletedExercise.class)!;
+					const filteredExercises = exerciseClass.filter(({exercise: {_id}}) => _id !== deletedExercise.id);
+
+					if (filteredExercises.length === 0) {
+						classes.delete(deletedExercise.class);
+					} else {
+						classes.set(deletedExercise.class, exerciseClass.filter(({exercise: {_id}}) => _id !== deletedExercise.id));
+					}
+
+					setDeletedExercise(initialStateDeleted);
+				}}
 			/>
 
 			<div className='flex-row-center flex-wrap'>
@@ -32,27 +47,27 @@ const ResumeTraining: FC<ResumeTrainingProps> = ({classes}) => {
 						title={`Treino ${trainingName}`}
 						className='resume-training'
 					>
-						<ul>
+						<ul className='p-0 m-0'>
 							{
-								classes.get(trainingName)!.map(exercise => (
-									<li key={`dropdown-button-drop-${exercise.exercise.name}`}>
-										<p>{exercise.exercise.name}</p>
+								classes.get(trainingName)!.map((exercise, index) => (
+									<li className='flex-center-around m-3' key={`dropdown-button-drop-${index}`}>
+										<p className='m-0' style={{flex: 1}}>{exercise.exercise.name}</p>
+										<div className='flex-row-center icon-button'>
+											<Button
+												variant='outline-danger'
+												type='button'
+												onClick={() => {
+													setIsConfirmModalOpen(true);
+													setDeletedExercise({class: trainingName, id: exercise.exercise._id!});
+												}}
+											>
+												<RiDeleteBinFill />
+											</Button>
+										</div>
 									</li>
 								))
 							}
 						</ul>
-						<div className='flex-row-center icon-button'>
-							<Button
-								variant='outline-danger'
-								type='button'
-								onClick={() => {
-									setIsConfirmModalOpen(true);
-									setDeletedTraining(trainingName);
-								}}
-							>
-								<RiDeleteBinFill />
-							</Button>
-						</div>
 					</DropdownButton>))
 				}
 			</div>

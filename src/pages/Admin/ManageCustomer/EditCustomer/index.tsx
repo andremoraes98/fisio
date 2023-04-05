@@ -1,4 +1,4 @@
-import React, {useContext, useState, type FC} from 'react';
+import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 import ReactSelect, {type SingleValue} from 'react-select';
@@ -15,12 +15,14 @@ const EditCustomer: FC = () => {
 		},
 		editUser,
 		roleOptions,
+		checkPermission,
 	} = useContext(UserContext)!;
 	const [formInfos, setFormInfos] = useState<InterUser>({
 		name: selectedName,
 		email: selectedEmail,
 		role: selectedRole,
 		password: '',
+		classes: new Map(),
 	});
 	const [selectRole, setSelectRole] = useState<SingleValue<{
 		value: string | undefined;
@@ -61,6 +63,10 @@ const EditCustomer: FC = () => {
 
 		setFormInfos(prevState => ({...prevState, role: target.value as 'admin' | 'user'}));
 	};
+
+	useEffect(() => {
+		checkPermission(navigate, 'admin');
+	}, []);
 
 	return (
 		<Form

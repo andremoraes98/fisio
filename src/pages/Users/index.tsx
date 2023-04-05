@@ -1,10 +1,9 @@
 import React, {useContext, useEffect, type FC} from 'react';
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
-import UserContext from '../../../context/User/UserContext';
-import './Home.css';
+import UserContext from '../../context/User/UserContext';
 
-const Home: FC = () => {
+const MainUser: FC = () => {
 	const {checkPermission} = useContext(UserContext)!;
 	const navigate = useNavigate();
 
@@ -14,7 +13,7 @@ const Home: FC = () => {
 	};
 
 	useEffect(() => {
-		checkPermission(navigate, 'admin');
+		checkPermission(navigate, 'user');
 	}, []);
 
 	return (
@@ -26,17 +25,17 @@ const Home: FC = () => {
 							navigate('/manage-customer');
 						}}
 					>
-						Gerenciar aluno
+						Realizar pagamento
 					</Button>
 				</div>
 
 				<div className='large-button'>
 					<Button
 						onClick={() => {
-							navigate('/manage-class');
+							navigate('/training');
 						}}
 					>
-						Gerenciar exercícios
+						Treinar
 					</Button>
 				</div>
 			</div>
@@ -53,4 +52,4 @@ const Home: FC = () => {
 	);
 };
 
-export default Home;
+export default MainUser;

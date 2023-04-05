@@ -1,12 +1,14 @@
-import React, {useState, type FC} from 'react';
+import React, {useContext, useEffect, useState, type FC} from 'react';
 import Button from 'react-bootstrap/Button';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './Calendar.css';
 import {useNavigate} from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import UserContext from '../../../context/User/UserContext';
 
 const Calendar: FC = () => {
+	const {checkPermission} = useContext(UserContext)!;
 	const navigate = useNavigate();
 
 	const [dates, setDates] = useState<Date[]>([]);
@@ -58,6 +60,10 @@ const Calendar: FC = () => {
 		const newDates = dates.filter((_date, hofIndex) => index !== hofIndex);
 		setDates(newDates);
 	};
+
+	useEffect(() => {
+		checkPermission(navigate, 'admin');
+	}, []);
 
 	return (
 		<section

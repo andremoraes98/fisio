@@ -18,6 +18,11 @@ export type InterExerciseContext = {
 	deleteExercise: (id: string) => Promise<number | undefined>;
 	selectedExercise: InterExercise;
 	muscleOptions: Array<{value: string; label: string}>;
+	trainingTypes: string[];
+	eccentricSpeedOptions: Array<{value: string; label: string}>;
+	concentricSpeedOptions: Array<{value: string; label: string}>;
+	isometricOptions: Array<{value: string; label: string}>;
+	filterExerciseById: (id: string) => InterExercise;
 };
 
 const ExerciseContext = createContext<InterExerciseContext | undefined>(undefined);

@@ -1,17 +1,20 @@
 import React, {useState, type FC, type PropsWithChildren} from 'react';
+import {type NavigateFunction, useNavigate} from 'react-router-dom';
 import type {InterCredentials, InterUser} from './UserContext';
 import UserContext from './UserContext';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-const MAIN_URL = process.env.REACT_APP_MAIN_API ?? 'localhost:3001';
+const MAIN_URL = process.env.REACT_APP_MAIN_API ?? 'http://localhost:3001';
 
 const UserProvider: FC<PropsWithChildren> = ({children}) => {
 	const [users, setUsers] = useState<InterUser[]>([]);
+	const [autenticatedUser, setAutenticatedUser] = useState<InterUser | undefined>(undefined);
 	const [selectedUser, setSelectedUser] = useState<InterUser>({
 		email: '',
 		name: '',
 		_id: '',
 		role: 'user',
+		classes: new Map(),
 	});
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -50,7 +53,7 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 
 	const createUser = async (userInfo: InterUser) => {
 		setIsLoading(true);
-		console.log(userInfo);
+
 		try {
 			const response = await fetch(`${MAIN_URL}/user`, {
 				method: 'PUT',
@@ -99,7 +102,7 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		}
 	};
 
-	const checkLoginCredentials = async (credentials: InterCredentials) => {
+	const login = async (credentials: InterCredentials) => {
 		setIsLoading(true);
 		try {
 			const response = await fetch(`${MAIN_URL}/login`, {
@@ -116,6 +119,26 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		}
 	};
 
+	const checkPermission = (navigate: NavigateFunction, role: string) => {
+		const user = localStorage.getItem('user');
+
+		if (!user) {
+			setAutenticatedUser(undefined);
+			navigate('/login');
+			return;
+		}
+
+		const {role: userRole} = JSON.parse(user) as InterUser;
+		if (role === userRole) {
+			return;
+		}
+
+		if (!autenticatedUser || autenticatedUser.role !== role) {
+			setAutenticatedUser(undefined);
+			navigate('/login');
+		}
+	};
+
 	const context = {
 		isLoading,
 		setIsLoading,
@@ -125,10 +148,13 @@ const UserProvider: FC<PropsWithChildren> = ({children}) => {
 		createUser,
 		editUser,
 		deleteUser,
-		checkLoginCredentials,
+		login,
 		selectedUser,
 		setSelectedUser,
 		roleOptions,
+		autenticatedUser,
+		setAutenticatedUser,
+		checkPermission,
 	};
 
 	return (

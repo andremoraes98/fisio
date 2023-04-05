@@ -1,8 +1,9 @@
-import React, {useContext, useState, type FC} from 'react';
+import React, {useContext, useEffect, useState, type FC} from 'react';
 import {Button, FloatingLabel, Form} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
-import ReactSelect, {type MultiValue, type SingleValue} from 'react-select';
+import ReactSelect, {type MultiValue} from 'react-select';
 import ExerciseContext, {type InterExercise} from '../../../../context/Exercise/ExerciseContext';
+import UserContext from '../../../../context/User/UserContext';
 
 const EditCustomer: FC = () => {
 	const navigate = useNavigate();
@@ -16,6 +17,7 @@ const EditCustomer: FC = () => {
 		muscleOptions,
 		editExercise,
 	} = useContext(ExerciseContext)!;
+	const {checkPermission} = useContext(UserContext)!;
 	const [formInfos, setFormInfos] = useState<InterExercise>({
 		name: selectedName,
 		link: selectedLink,
@@ -63,6 +65,10 @@ const EditCustomer: FC = () => {
 
 		setFormInfos(prevState => ({...prevState, muscle: target.map(({label}) => label)}));
 	};
+
+	useEffect(() => {
+		checkPermission(navigate, 'admin');
+	}, []);
 
 	return (
 		<Form

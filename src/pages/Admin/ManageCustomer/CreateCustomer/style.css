@@ -1,0 +1,42 @@
+#create-customer-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#create-customer-main section {
+  padding: 0 1rem;
+  width: 350px;
+}
+
+#create-customer-main section:last-child {
+  border-left: 1px solid gray;
+}
+
+.training-buttons {
+  flex-wrap: wrap;
+  margin-inline: auto;
+  min-width: 300px;
+}
+
+.training-buttons label {
+  width: 38px;
+  margin: 0.5rem;
+}
+
+.resume-training {
+  margin: 0.5rem;
+  width: 85px;
+}
+
+@media (width < 700px) {
+  #create-customer-main section:last-child {
+    border-left: none;
+    border-top: 1px solid gray;
+  }
+
+  #create-customer-main section {
+    padding: 1rem 0;
+  }
+}

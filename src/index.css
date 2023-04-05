@@ -24,6 +24,12 @@ code {
   align-items: center;
 }
 
+.flex-row-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .flex-center-evenly {
   display: flex;
   justify-content: space-evenly;
@@ -62,6 +68,8 @@ code {
 }
 
 .icon-button button {
+  height: 100%;
+  width: 100%;
   padding: 0;
   display: flex;
   justify-content: center;
@@ -72,4 +80,8 @@ code {
   margin: 10px 20px;
   max-width: 300px;
   min-width: 250px;
+}
+
+.dropdown-menu {
+  padding: 0 !important;
 }

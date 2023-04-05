@@ -3,12 +3,12 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
-import UserContext, {type InterCredentials} from '../../context/User/UserContext';
+import UserContext, {type InterUser, type InterCredentials} from '../../context/User/UserContext';
 import './Login.css';
 
 const Login: FC = () => {
 	const navigate = useNavigate();
-	const {checkLoginCredentials} = useContext(UserContext)!;
+	const {login, setAutenticatedUser} = useContext(UserContext)!;
 	const [credentials, setCredentials] = useState<InterCredentials>({email: '', password: ''});
 	const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
 
@@ -25,7 +25,7 @@ const Login: FC = () => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const response = (await checkLoginCredentials(credentials))!;
+		const response = (await login(credentials))!;
 
 		if (response.status !== 200) {
 			const {message} = await response.json() as {message: string};
@@ -33,9 +33,17 @@ const Login: FC = () => {
 			return;
 		}
 
-		const {token} = await response.json() as {token: string};
-		localStorage.setItem('token', token);
-		navigate('/home');
+		const user = await response.json() as InterUser;
+		setAutenticatedUser(user);
+		localStorage.setItem('user', JSON.stringify(user));
+
+		if (user.role === 'admin') {
+			navigate('/admin');
+		} else if (user.role === 'user') {
+			navigate('/user');
+		} else {
+			setErrorMessage('Usuário não encontrado');
+		}
 	};
 
 	return (

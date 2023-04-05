@@ -16,6 +16,7 @@ const SelectCustomer: FC = () => {
 		setSelectedUser,
 		deleteUser,
 		selectedUser: {_id, role},
+		checkPermission,
 	} = useContext(UserContext)!;
 	const navigate = useNavigate();
 
@@ -27,6 +28,7 @@ const SelectCustomer: FC = () => {
 
 	useEffect(() => {
 		getUsers();
+		checkPermission(navigate, 'admin');
 	}, []);
 
 	const handleSelectCutomer = (target: SingleValue<{

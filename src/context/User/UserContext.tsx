@@ -1,8 +1,20 @@
 import {createContext, type Dispatch, type SetStateAction} from 'react';
+import {type NavigateFunction} from 'react-router-dom';
+import {type InterExercise} from '../Exercise/ExerciseContext';
 
 export type InterCredentials = {
 	email: string;
 	password: string;
+};
+
+export type InterExerciseDetails = {
+	exercise: InterExercise;
+	series: string;
+	repetitions: string;
+	interval: string;
+	concentricSpeed: string;
+	eccentricSpeed: string;
+	isometric: string[];
 };
 
 export type InterUser = {
@@ -11,6 +23,7 @@ export type InterUser = {
 	email: string;
 	role: 'user' | 'admin';
 	password?: string;
+	classes: Map<string, InterExerciseDetails[]>;
 };
 
 export type InterContext = {
@@ -22,10 +35,13 @@ export type InterContext = {
 	createUser: (userInfo: InterUser) => Promise<number | undefined>;
 	editUser: (id: string, userInfo: InterUser) => Promise<number | undefined>;
 	deleteUser: (id: string) => Promise<number | undefined>;
-	checkLoginCredentials: (credentials: InterCredentials) => Promise<Response | undefined>;
+	login: (credentials: InterCredentials) => Promise<Response | undefined>;
 	selectedUser: InterUser;
 	setSelectedUser: (userInfo: InterUser) => void;
 	roleOptions: Array<{value: string; label: string}>;
+	autenticatedUser: InterUser | undefined;
+	setAutenticatedUser: (userInfo: InterUser | undefined) => void;
+	checkPermission: (navigate: NavigateFunction, role: string) => void;
 };
 
 const UserContext = createContext<InterContext | undefined>(undefined);
